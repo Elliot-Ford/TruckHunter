@@ -505,8 +505,8 @@ function distance(x1, y1, x2, y2) {
 }
 
 function sendLocationMessage(recipientId, truck_id) {
-  var lat = trucks.getJSONArray(truck_id).coordinate.lat;
-  var long = trucks.getJSONArray(truck_id).coordinate.long;
+  var lat = trucks.getJSONArray(truck_id).coordinates.lat;
+  var long = trucks.getJSONArray(truck_id).coordinates.long;
   var messageData = {
     recipient: {
       id: recipientId
