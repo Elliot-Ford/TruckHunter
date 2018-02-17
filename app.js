@@ -445,8 +445,15 @@ function receivedMessage (event) {
         sendUnknownMessage(senderID);
     }
   } else if (messageAttachments) {
-    if(messageAttachments.type === "location") {
-      sendLocationMessage();
+    var lat = null;
+    var log = null;
+    // if(messageAttachments.type === "location") {
+    //   sendLocationMessage();
+    //   sendTrucksMessage(senderID);
+    // }
+    if (messageAttachments[0].payload.coordinate) {
+      lat = messageAttachments[0].payload.coordinate.lat;
+      log = messageAttachments[0].payload.coordinate.log;
       sendTrucksMessage(senderID);
     }
   }
@@ -454,8 +461,8 @@ function receivedMessage (event) {
 
 function sendTrucksMessage(recipientId) {
   var ret = "";
-  for (var truck in trucks) {
-    ret += "{0}: {1}".format(truck, truck.truck_name);
+  forEach(truck in trucks) {
+    ret += "{0}: {1}".format(truck,truck.truck_name);
   }
   var messageData = {
     recipient: {
@@ -467,7 +474,9 @@ function sendTrucksMessage(recipientId) {
   }
   callSendAPI(messageData);
 }
-
+// function rankTrucks(lati, longi) {
+//   var
+// }
 function sendLocationMessage(recipientId, truck_id) {
   var lat = trucks.getJSONArray(truck_id).coordinate.lat;
   var long = trucks.getJSONArray(truck_id).coordinate.long;
