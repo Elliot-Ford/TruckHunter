@@ -270,18 +270,66 @@ function receivedMessage (event) {
         sendHiMessage(senderID);
         break;
 
+      case '\d':
+        if(true) {
+          sendLocationMessage(senderID);
+        }
+        break;
+
       case 'start hunt':
-        sendQuickReply(senderID)
+        sendQuickReply(senderID);
         break;
 
       default:
-        sendTextMessage(senderID, messageText);
+        sendUnknownMessage(senderID);
     }
   } else if (messageAttachments) {
     if(messageAttachments.type === "location") {
       // send
     }
   }
+}
+
+function sendLocationMessage(recipientId) {
+  var lat, long = 0;
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "generic",
+          elements: {
+            element: {
+              title: "Here's your food truck",
+              image_url="https://maps.googleapis.com/maps/api/staticmap?size=764x400&center=" + lat + "," + long +
+                          "&zoom=15&markers=" + lat + "," + long,
+              default_action=dict(
+                type="web_url",
+                url="http://maps.apple.com/maps?q=" + venue + "&ll=" + lat + "," + long +
+                        "&z=15"
+              )
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+function sendUnknownMessage(recipientId) {
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      text: `Unfortunatly I'm not that smart (yet).`
+    }
+  }
+
+  callSendAPI(messageData);
 }
 
 
