@@ -293,24 +293,19 @@ function receivedMessage (event) {
 function sendLocationMessage(recipientId) {
   var lat, long = 0;
   var messageData = {
-    recipient: {
-      id: recipientId
+    "recipient": {
+      "id": "recipientId"
     },
-    message: {
-      attachment: {
-        type: "template",
-        payload: {
-          template_type: "generic",
-          elements: {
-            element: {
-              title: "Here's your food truck",
-              image_url="https://maps.googleapis.com/maps/api/staticmap?size=764x400&center=" + lat + "," + long +
-                          "&zoom=15&markers=" + lat + "," + long,
-              default_action=dict(
-                type="web_url",
-                url="http://maps.apple.com/maps?q=" + venue + "&ll=" + lat + "," + long +
-                        "&z=15"
-              )
+    "message": {
+      "attachment": {
+        "type": "template",
+        "payload": {
+          "template_type": "generic",
+          "elements": {
+            "element": {
+              "title": "Here's your food truck",
+              "image_url": "https://maps.googleapis.com/maps/api/staticmap?size=764x400&center=" + lat + "," + long +
+                          "&zoom=15&markers=" + lat + "," + long
             }
           }
         }
