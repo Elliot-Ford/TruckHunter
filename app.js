@@ -326,7 +326,7 @@ function receivedMessage(event) {
         sendTextMessage(senderID, messageText);
     }
   } else if (messageAttachments) {
-    sendTextMessage(senderID, "Message with attachment type " + messageAttachments.type);
+    sendTextMessage(senderID, "Message with attachment type " + JSON.stringify(messageAttachments.type, undefined, 1));
   }
 }
 
