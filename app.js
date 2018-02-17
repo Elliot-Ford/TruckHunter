@@ -331,7 +331,7 @@ function receivedMessage (event) {
     // }
 
       lat = messageAttachments[0].payload.coordinates.lat
-
+      console.log(lat);
       long = messageAttachments[0].payload.coordinates.long
       sendTrucksMessage(senderID, lat, long)
     //   app.get('/', function (req, res) {
