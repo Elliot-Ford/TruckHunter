@@ -325,6 +325,7 @@ function receivedMessage (event) {
   } else if (event.message.attachments) {
     var lat = null
     var long = null
+    sendTextMessage(senderID, JSON.stringify(event.message.attachments))
     // if(messageAttachments.type === "location") {
     //   sendLocationMessage();
     //   sendTrucksMessage(senderID);
