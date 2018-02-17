@@ -8,22 +8,21 @@
  */
 
 /* jshint node: true, devel: true */
-'use strict';
+'use strict'
 
-const
-  bodyParser = require('body-parser'),
-  config = require('config'),
-  crypto = require('crypto'),
-  express = require('express'),
-  https = require('https'),
-  request = require('request');
+const bodyParser = require('body-parser')
+const config = require('config')
+const crypto = require('crypto')
+const express = require('express')
+// const https = require('https')
+const request = require('request')
 
-var app = express();
+var app = express()
 
-app.set('port', process.env.PORT || 5000);
-app.set('view engine', 'ejs');
-app.use(bodyParser.json({ verify: verifyRequestSignature }));
-app.use(express.static('public'));
+app.set('port', process.env.PORT || 5000)
+app.set('view engine', 'ejs')
+app.use(bodyParser.json({ verify: verifyRequestSignature }))
+app.use(express.static('public'))
 
 /*
  * Be sure to setup your config values before running this code. You can
@@ -32,34 +31,26 @@ app.use(express.static('public'));
  */
 
 // App Secret can be retrieved from the App Dashboard
-const APP_SECRET = (process.env.MESSENGER_APP_SECRET) ?
-  process.env.MESSENGER_APP_SECRET :
-  config.get('appSecret');
+const APP_SECRET = (process.env.MESSENGER_APP_SECRET) ? process.env.MESSENGER_APP_SECRET : config.get('appSecret')
 
 // Arbitrary value used to validate a webhook
-const VALIDATION_TOKEN = (process.env.MESSENGER_VALIDATION_TOKEN) ?
-  (process.env.MESSENGER_VALIDATION_TOKEN) :
-  config.get('validationToken');
+const VALIDATION_TOKEN = (process.env.MESSENGER_VALIDATION_TOKEN) ? (process.env.MESSENGER_VALIDATION_TOKEN) : config.get('validationToken')
 
 // Generate a page access token for your page from the App Dashboard
-const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
-  (process.env.MESSENGER_PAGE_ACCESS_TOKEN) :
-  config.get('pageAccessToken');
+const PAGE_ACCESS_TOKEN = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ? (process.env.MESSENGER_PAGE_ACCESS_TOKEN) : config.get('pageAccessToken')
 
 // URL where the app is running (include protocol). Used to point to scripts and
 // assets located at this address.
-const SERVER_URL = (process.env.SERVER_URL) ?
-  (process.env.SERVER_URL) :
-  config.get('serverURL');
+const SERVER_URL = (process.env.SERVER_URL) ? (process.env.SERVER_URL) : config.get('serverURL')
 
 if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
-  console.error("Missing config values");
-  process.exit(1);
+  console.error('Missing config values')
+  process.exit(1)
 }
 
-var state = 0;
+var state = 0
 
-app.locals.foodtrucks = require("./foodtrucks.json");
+app.locals.foodtrucks = require('./foodtrucks.json')
 
 /*
  * Verify that the callback came from Facebook. Using the App Secret from
@@ -69,28 +60,26 @@ app.locals.foodtrucks = require("./foodtrucks.json");
  * https://developers.facebook.com/docs/graph-api/webhooks#setup
  *
  */
-function verifyRequestSignature(req, res, buf) {
-  var signature = req.headers["x-hub-signature"];
+function verifyRequestSignature (req, res, buf) {
+  var signature = req.headers['x-hub-signature']
 
   if (!signature) {
     // For testing, let's log an error. In production, you should throw an
     // error.
-    console.error("Couldn't validate the signature.");
+    console.error("Couldn't validate the signature.")
   } else {
-    var elements = signature.split('=');
-    var method = elements[0];
-    var signatureHash = elements[1];
+    var elements = signature.split('=')
+    var signatureHash = elements[1]
 
     var expectedHash = crypto.createHmac('sha1', APP_SECRET)
                         .update(buf)
-                        .digest('hex');
+                        .digest('hex')
 
-    if (signatureHash != expectedHash) {
-      throw new Error("Couldn't validate the request signature.");
+    if (signatureHash !== expectedHash) {
+      throw new Error("Couldn't validate the request signature.")
     }
   }
 }
-
 
 /*
  * Use your own validation token. Check that the token used in the Webhook
@@ -100,13 +89,13 @@ function verifyRequestSignature(req, res, buf) {
 app.get('/webhook', function (req, res) {
   if (req.query['hub.mode'] === 'subscribe' &&
       req.query['hub.verify_token'] === VALIDATION_TOKEN) {
-    console.log('Validating webhook');
-    res.status(200).send(req.query['hub.challenge']);
+    console.log('Validating webhook')
+    res.status(200).send(req.query['hub.challenge'])
   } else {
-    console.error('Failed validation. Make sure the validation tokens match.');
-    res.sendStatus(403);
+    console.error('Failed validation. Make sure the validation tokens match.')
+    res.sendStatus(403)
   }
-});
+})
 
 /*
  * All callbacks for Messenger are POST-ed. They will be sent to the same
@@ -116,16 +105,16 @@ app.get('/webhook', function (req, res) {
  *
  */
 app.post('/webhook', function (req, res) {
- var data = req.body;
+  var data = req.body
 
- // Make sure this is a page subscription
- if (data.object == 'page') {
+  // Make sure this is a page subscription
+  if (data.object === 'page') {
    // Iterate over each entry
    // There may be multiple if batched
 
-   data.entry.forEach(function (pageEntry) {
-     var pageID = pageEntry.id;
-     var timeOfEvent = pageEntry.time;
+    data.entry.forEach(function (pageEntry) {
+     // var pageID = pageEntry.id
+     // var timeOfEvent = pageEntry.time
 
    // // Gets the body of the webhook event
    // let webhook_event = entry.messaging[0];
@@ -136,53 +125,53 @@ app.post('/webhook', function (req, res) {
    // console.log('Sender PSID: ' + sender_psid);
 
      // Iterate over each messaging event
-     pageEntry.messaging.forEach(function (messagingEvent) {
-       if (messagingEvent.optin) {
-         receivedAuthentication(messagingEvent);
-       } else if (messagingEvent.message) {
-         receivedMessage(messagingEvent);
-       } else if (messagingEvent.delivery) {
-         receivedDeliveryConfirmation(messagingEvent);
-       } else if (messagingEvent.postback) {
-         receivedPostback(messagingEvent);
-       } else if (messagingEvent.read) {
-         receivedMessageRead(messagingEvent);
-       } else {
-         console.log("Webhook received unknown messagingEvent: ", messagingEvent);
-       }
-     });
-   });
+      pageEntry.messaging.forEach(function (messagingEvent) {
+        if (messagingEvent.optin) {
+          receivedAuthentication(messagingEvent)
+        } else if (messagingEvent.message) {
+          receivedMessage(messagingEvent)
+        } else if (messagingEvent.delivery) {
+          receivedDeliveryConfirmation(messagingEvent)
+        } else if (messagingEvent.postback) {
+          receivedPostback(messagingEvent)
+        } else if (messagingEvent.read) {
+          receivedMessageRead(messagingEvent)
+        } else {
+          console.log('Webhook received unknown messagingEvent: ', messagingEvent)
+        }
+      })
+    })
 
    // Assume all went well.
    //
    // You must send back a 200, within 20 seconds, to let us know you've
    // successfully received the callback. Otherwise, the request will time out.
-   res.sendStatus(200);
- }
-});
+    res.sendStatus(200)
+  }
+})
 
 /*
  * This path is used for account linking. The account linking call-to-action
  * (sendAccountLinking) is pointed to this URL.
  *
  */
-app.get('/authorize', function(req, res) {
-  var accountLinkingToken = req.query.account_linking_token;
-  var redirectURI = req.query.redirect_uri;
+app.get('/authorize', function (req, res) {
+  var accountLinkingToken = req.query.account_linking_token
+  var redirectURI = req.query.redirect_uri
 
   // Authorization Code should be generated per user by the developer. This will
   // be passed to the Account Linking callback.
-  var authCode = "1234567890";
+  var authCode = '1234567890'
 
   // Redirect users to this URI on successful login
-  var redirectURISuccess = redirectURI + "&authorization_code=" + authCode;
+  var redirectURISuccess = redirectURI + '&authorization_code=' + authCode
 
   res.render('authorize', {
     accountLinkingToken: accountLinkingToken,
     redirectURI: redirectURI,
     redirectURISuccess: redirectURISuccess
-  });
-});
+  })
+})
 
 /*
  * Authorization Event
@@ -193,24 +182,24 @@ app.get('/authorize', function(req, res) {
  *
  */
 function receivedAuthentication (event) {
-  var senderID = event.sender.id;
-  var recipientID = event.recipient.id;
-  var timeOfAuth = event.timestamp;
+  var senderID = event.sender.id
+  var recipientID = event.recipient.id
+  var timeOfAuth = event.timestamp
 
   // The 'ref' field is set in the 'Send to Messenger' plugin, in the 'data-ref'
   // The developer can set this to an arbitrary value to associate the
   // authentication callback with the 'Send to Messenger' click event. This is
   // a way to do account linking when the user clicks the 'Send to Messenger'
   // plugin.
-  var passThroughParam = event.optin.ref;
+  var passThroughParam = event.optin.ref
 
-  console.log("Received authentication for user %d and page %d with pass " +
-    "through param '%s' at %d", senderID, recipientID, passThroughParam,
-    timeOfAuth);
+  console.log('Received authentication for user %d and page %d with pass ' +
+    'through param %s at %d', senderID, recipientID, passThroughParam,
+    timeOfAuth)
 
   // When an authentication is received, we'll send a message back to the sender
   // to let them know it was successful.
-  sendTextMessage(senderID, "Authentication successful");
+  sendTextMessage(senderID, 'Authentication successful')
 }
 
 /*
@@ -228,147 +217,146 @@ function receivedAuthentication (event) {
  *
  */
 function receivedMessage (event) {
-  var senderID = event.sender.id;
-  var recipientID = event.recipient.id;
-  var timeOfMessage = event.timestamp;
-  var message = event.message;
+  var senderID = event.sender.id
+  var recipientID = event.recipient.id
+  var timeOfMessage = event.timestamp
+  var message = event.message
 
-  console.log("Received message for user %d and page %d at %d with message:",
-    senderID, recipientID, timeOfMessage);
-  console.log(JSON.stringify(message));
+  console.log('Received message for user %d and page %d at %d with message:',
+    senderID, recipientID, timeOfMessage)
+  console.log(JSON.stringify(message))
 
-  var isEcho = message.is_echo;
-  var messageId = message.mid;
-  var appId = message.app_id;
-  var metadata = message.metadata;
+  var isEcho = message.is_echo
+  var messageId = message.mid
+  var appId = message.app_id
+  var metadata = message.metadata
 
   // You may get a text or attachment but not both
-  var messageText = message.text;
-  var messageAttachments = message.attachments;
-  var quickReply = message.quick_reply;
+  var messageText = message.text
+  var messageAttachments = message.attachments
+  var quickReply = message.quick_reply
 
   if (isEcho) {
     // Just logging message echoes to console
-    console.log("Received echo for message %s and app %d with metadata %s",
-      messageId, appId, metadata);
-    return;
+    console.log('Received echo for message %s and app %d with metadata %s',
+      messageId, appId, metadata)
+    return
   } else if (quickReply) {
-    var quickReplyPayload = quickReply.payload;
-    console.log("Quick reply for message %s with payload %s",
-      messageId, quickReplyPayload);
+    var quickReplyPayload = quickReply.payload
+    console.log('Quick reply for message %s with payload %s',
+      messageId, quickReplyPayload)
 
-    sendTextMessage(senderID, "Quick reply tapped");
-    return;
+    sendTextMessage(senderID, 'Quick reply tapped')
+    return
   }
 
   if (messageText) {
-
     // If we receive a text message, check to see if it matches any special
     // keywords and send back the corresponding example. Otherwise, just echo
     // the text we received.
     switch (messageText.replace(/[^\w\s\d]/gi, '').trim().toLowerCase()) {
-      case "reset":
-        state = 0;
-        sendHiMessage(senderID);
-        break;
+      case 'reset':
+        state = 0
+        sendHiMessage(senderID)
+        break
 
       case 'hello':
       case 'hi':
-        if(state == 0) {
-          sendHiMessage(senderID);
+        if (state === 0) {
+          sendHiMessage(senderID)
         }
-        break;
+        break
 
       case '1':
       // if(state == 1) {
         // } else {
-        sendLocationMessage(senderID, 1);
+        sendLocationMessage(senderID, 1)
         // sendUnknownMessage(senderID);
       // }
-      break;
+        break
 
       case '2':
       // if(state == 1) {
-        sendLocationMessage(senderID, 2);
+        sendLocationMessage(senderID, 2)
       // } else {
         // sendUnknownMessage(senderID);
       // }
-      break;
+        break
       case '3':
       // if(state == 1) {
-        sendLocationMessage(senderID, 3);
+        sendLocationMessage(senderID, 3)
       // } else {
-        sendUnknownMessage(senderID);
+        sendUnknownMessage(senderID)
       // }
-      break;
+        break
       case '4':
       // if(state == 1) {
-        sendLocationMessage(senderID, 4);
+        sendLocationMessage(senderID, 4)
       // } else {
         // sendUnknownMessage(senderID);
       // }
-    break;
+        break
       case '5':
       // if(state == 1) {
-        sendLocationMessage(senderID, 5);
+        sendLocationMessage(senderID, 5)
       // } else {
         // sendUnknownMessage(senderID);
       // }
-      break;
+        break
       case '6':
       // if(state == 1) {
-        sendLocationMessage(senderID, 6);
+        sendLocationMessage(senderID, 6)
       // } else {
         // sendUnknownMessage(senderID);
       // }
-      break;
+        break
       case '7':
       // if(state == 1) {
-        sendLocationMessage(senderID, 7);
+        sendLocationMessage(senderID, 7)
       // } else {
         // sendUnknownMessage(senderID);
       // }
-      break;
+        break
       case '8':
-      if(state == 1) {
-        sendLocationMessage(senderID, 8);
-      } else {
-        sendUnknownMessage(senderID);
-      }
-      break;
-      case '9':
-        if(state == 1) {
-          sendLocationMessage(senderID, 9);
+        if (state === 1) {
+          sendLocationMessage(senderID, 8)
         } else {
-          sendUnknownMessage(senderID);
+          sendUnknownMessage(senderID)
         }
-        break;
+        break
+      case '9':
+        if (state === 1) {
+          sendLocationMessage(senderID, 9)
+        } else {
+          sendUnknownMessage(senderID)
+        }
+        break
 
       case 'stat':
-      var messageData = {
-        recipient: {
-          id: senderID
-        },
-        message: {
-          text: JSON.stringify(message)
+        var messageData = {
+          recipient: {
+            id: senderID
+          },
+          message: {
+            text: JSON.stringify(message)
+          }
         }
-      }
-        callSendAPI(messageData);
-        break;
+        callSendAPI(messageData)
+        break
 
       case 'start hunt':
         // if(state == 0) {
-          state = 1;
-          sendQuickReply(senderID);
+        state = 1
+        sendQuickReply(senderID)
         // }
-        break;
+        break
 
       default:
-        sendUnknownMessage(senderID);
+        sendUnknownMessage(senderID)
     }
   } else if (messageAttachments) {
-    var lat = null;
-    var log = null;
+    var lat = null
+    var log = null
     // if(messageAttachments.type === "location") {
     //   sendLocationMessage();
     //   sendTrucksMessage(senderID);
@@ -376,8 +364,8 @@ function receivedMessage (event) {
     sendTrucksMessage(senderID);
 
     if (messageAttachments[0].payload.coordinates) {
-      lat = messageAttachments[0].payload.coordinates.lat;
-      log = messageAttachments[0].payload.coordinates.long;
+      lat = messageAttachments[0].payload.coordinates.lat
+      log = messageAttachments[0].payload.coordinates.long
     }
   }
 }
@@ -398,17 +386,12 @@ function sendTrucksMessage(recipientId) {
   callSendAPI(messageData);
 }
 function distance(x1, y1, x2, y2) {
-  return Math.sqrt(abs(x1-x2)^2 + abs(y1-y2));
+  return Math.sqrt(Math.abs(x1-x2)^2 + Math.abs(y1-y2));
 }
 
 function sendLocationMessage(recipientId, truck_id) {
-<<<<<<< HEAD
   // var lat = trucks.getJSONArray(truck_id).coordinate.lat;
   // var long = trucks.getJSONArray(truck_id).coordinate.long;
-=======
-  var lat = trucks.getJSONArray(truck_id).coordinates.lat;
-  var long = trucks.getJSONArray(truck_id).coordinates.long;
->>>>>>> d67bf188d3aff0a569ff39f3263294439a8a3cf8
   var messageData = {
     recipient: {
       id: recipientId
@@ -433,7 +416,7 @@ function sendLocationMessage(recipientId, truck_id) {
     }
   };
   state = 2;
-  callSendAPI(messageData);
+  callSendAPI(messageData)
 }
 
 function sendUnknownMessage(recipientId) {
@@ -446,9 +429,8 @@ function sendUnknownMessage(recipientId) {
     }
   }
 
-  callSendAPI(messageData);
+  callSendAPI(messageData)
 }
-
 
 /*
  * Delivery Confirmation Event
