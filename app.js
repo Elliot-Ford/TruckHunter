@@ -8,10 +8,14 @@ app.use(bodyParser.json())
 
 // This code is called only when subscribing the webhook //
 app.get('/webhook/', function (req, res) {
-    if (req.query['hub.verify_token'] === 'mySecretAccessToken') {
-        res.send(req.query['hub.challenge']);
-    }
-    res.send('Error, wrong validation token');
+  if (req.query['hub.mode'] === 'subscribe' &&
+    req.query['hub.verify_token'] === BIGTOKEN) {
+  console.log("Validating webhook");
+  res.status(200).send(req.query['hub.challenge']);
+} else {
+  console.error("Failed validation. Make sure the validation tokens match.");
+  res.sendStatus(403);
+}
 })
 
 
