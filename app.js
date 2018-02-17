@@ -480,7 +480,7 @@ function receivedMessage (event) {
 
     if (messageAttachments[0].payload.coordinates) {
       lat = messageAttachments[0].payload.coordinates.lat;
-      log = messageAttachments[0].payload.coordinates.log;
+      log = messageAttachments[0].payload.coordinates.long;
     }
   }
 }
