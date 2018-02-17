@@ -26,8 +26,8 @@
           var contentString = '<div id="content">'+'<div id="siteNotice">'+'</div>'+
         '<h1 id="firstHeading" class="firstHeading">' + truck.truck_name + '</h1>'+
         '<div id="bodyContent">'+ '<p><b>' + truck.truck_name + '</b>, specialises in' +
-        '     cuisine.' + '<p>Direction:' + truck.truck_name + ',<a href="https://localhost:8888/">'+
-        'https://localhost:8888/</a></p>'+'</div>'+'</div>';
+        '     cuisine.' + '<p>Direction:' + truck.truck_name + ',<a href="https://www.google.ca/maps/place/' + truck.lat + ',' + truck.long + '/@' + truck.lat + ',' + truck.long + ',17z/data=!4m5!3m4!1s0x0:0x0!8m2!3d' + truck.lat + '!4d' + truck.long + '">' +
+        'Directions</a></p>'+'</div>'+'</div>';
           var infoWindow = new google.maps.InfoWindow({content: contentString});
           var marker = new google.maps.Marker({
             position: thisTruck,
