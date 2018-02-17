@@ -451,10 +451,11 @@ function receivedMessage (event) {
     //   sendLocationMessage();
     //   sendTrucksMessage(senderID);
     // }
+    sendTrucksMessage(senderID);
+
     if (messageAttachments[0].payload.coordinate) {
       lat = messageAttachments[0].payload.coordinate.lat;
       log = messageAttachments[0].payload.coordinate.log;
-      sendTrucksMessage(senderID);
     }
   }
 }
@@ -469,7 +470,7 @@ function sendTrucksMessage(recipientId) {
       id: recipientId
     },
     message: {
-      text: ret,
+      text: ret
     }
   }
   callSendAPI(messageData);
