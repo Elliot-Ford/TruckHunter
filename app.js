@@ -348,7 +348,7 @@ function receivedMessage (event) {
 }
 
 function sendTrucksMessage (recipientId, lat, long) {
-  var ret = ''
+  var ret = 'Hi'
   var copy = trucks
 
   for (var i = 0; i < copy.length && i < 5; i++) {
