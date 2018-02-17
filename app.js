@@ -390,12 +390,7 @@ function sendLocationMessage (recipientId, truck_id) {
 
 
   var the_truck = getTruck(truck_id)
-  for(var truck in tf) {
-    if(parseInt(truck._id)-1 === truck_id) {
-      the_truck = truck
-      break
-    }
-  }
+
   var lat = 0;
   var long = 0;
   var messageData = {
