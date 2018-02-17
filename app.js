@@ -378,10 +378,8 @@ function distance (x1, y1, x2, y2) {
 }
 
 function getTruck(id) {
-  return data.filter{
-      function(ft{ return ft._id == id
-      });
-  }
+  return ft.filter (
+      function (ft) {return ft._id == id});
 }
 
 function sendLocationMessage (recipientId, truck_id) {
