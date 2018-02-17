@@ -144,7 +144,7 @@ app.post('/webhook', function (req, res) {
        } else if (messagingEvent.read) {
          receivedMessageRead(messagingEvent);
        } else if (messagingEvent.account_linking) {
-         webhook.receivedAccountLink(messagingEvent);
+         receivedAccountLink(messagingEvent);
        } else {
          console.log("Webhook received unknown messagingEvent: ", messagingEvent);
        }
@@ -319,7 +319,7 @@ function sendLocationMessage(recipientId) {
             + lat + "," + long + "&key=AIzaSyB6vp4DRwF2xSUVdOefzuVkncvc7kDMyo8",
             default_action: {
               type: "web_url",
-              url: "https://www.google.ca/maps/place/" + lat + "," + long + "/@" + lat + "," + long + ",17z/data=!4m5!3m4!1s0x0:0x0!8m2!3d" + lat + "!4d" + long,
+              url: "https://www.google.ca/maps/place/" + lat + "," + long + "/@" + lat + "," + long + ",17z/data=!4m5!3m4!1s0x0:0x0!8m2!3d" + lat + "!4d" + long
             }
           }]
         }
@@ -490,57 +490,6 @@ function sendTextMessage(recipientId, messageText) {
 }
 
 /*
- * Send a Structured Message (Generic Message type) using the Send API.
- *
- */
-function sendGenericMessage(recipientId) {
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      attachment: {
-        type: "template",
-        payload: {
-          template_type: "generic",
-          elements: [{
-            title: "rift",
-            subtitle: "Next-generation virtual reality",
-            item_url: "https://www.oculus.com/en-us/rift/",
-            image_url: SERVER_URL + "/assets/rift.png",
-            buttons: [{
-              type: "web_url",
-              url: "https://www.oculus.com/en-us/rift/",
-              title: "Open Web URL"
-            }, {
-              type: "postback",
-              title: "Call Postback",
-              payload: "Payload for first bubble",
-            }],
-          }, {
-            title: "touch",
-            subtitle: "Your Hands, Now in VR",
-            item_url: "https://www.oculus.com/en-us/touch/",
-            image_url: SERVER_URL + "/assets/touch.png",
-            buttons: [{
-              type: "web_url",
-              url: "https://www.oculus.com/en-us/touch/",
-              title: "Open Web URL"
-            }, {
-              type: "postback",
-              title: "Call Postback",
-              payload: "Payload for second bubble",
-            }]
-          }]
-        }
-      }
-    }
-  };
-
-  callSendAPI(messageData);
-}
-
-/*
  * Send a message with Quick Reply buttons.
  *
  */
@@ -623,14 +572,9 @@ module.exports = app;
  * Module dependencies.
  */
 
-var express = require('express'),
-    routes = require('./routes'),
-    user = require('./routes/user'),
-    http = require('http'),
+var
     path = require('path'),
     fs = require('fs');
-
-var app = express();
 
 var db_food_truck;
 
@@ -650,31 +594,16 @@ var dbCredentialsUsers = {
     dbName: 'users_db'
 };
 
-var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var logger = require('morgan');
 var errorHandler = require('errorhandler');
 var multipart = require('connect-multiparty')
 var multipartMiddleware = multipart();
 
-// all environments
-app.set('port', process.env.PORT || 3000);
-app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
-app.engine('html', require('ejs').renderFile);
-app.use(logger('dev'));
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
-app.use(bodyParser.json());
-app.use(methodOverride());
-app.use(express.static(path.join(__dirname, 'public')));
-app.use('/style', express.static(path.join(__dirname, '/views/style')));
-
-// development only
-if ('development' == app.get('env')) {
-    app.use(errorHandler());
-}
+// // development only
+// if ('development' == app.get('env')) {
+//     app.use(errorHandler());
+// }
 
 function getdbCredentialsUrl(jsonData) {
     var vcapServices = JSON.parse(jsonData);
@@ -729,8 +658,6 @@ function initDBConnection() {
 }
 
 initDBConnection();
-
-app.get('/', routes.index);
 
 function createFoodTruckDB(id, truck_name, lat, long, discount, url) {
 
@@ -790,7 +717,7 @@ app.post('/api/foodtruck', function(request, response) {
     var discount = sanitizeInput(request.body.discout);
     var url = sanitizeInput(request.body.url);
 
-    saveFoodTruck = function(id, truck_name, lat, long, discount, url, response)
+    saveFoodTruck = function(id, truck_name, lat, long, discount, url, response);
 
 });
 
@@ -1130,8 +1057,4 @@ app.get('/api/user', function(request, response) {
         }
     });
 
-});
-
-http.createServer(app).listen(app.get('port'), '0.0.0.0', function() {
-    console.log('Express server listening on port ' + app.get('port'));
 });
