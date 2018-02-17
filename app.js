@@ -9,7 +9,7 @@ app.use(bodyParser.json())
 // This code is called only when subscribing the webhook //
 app.get('/webhook/', function (req, res) {
   if (req.query['hub.mode'] === 'subscribe' &&
-    req.query['hub.verify_token'] === BIGTOKEN) {
+    req.query['hub.verify_token'] === 'BIGTOKEN') {
   console.log("Validating webhook");
   res.status(200).send(req.query['hub.challenge']);
 } else {
