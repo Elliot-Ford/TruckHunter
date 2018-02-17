@@ -349,9 +349,9 @@ function receivedMessage (event) {
 }
 
 function sendTrucksMessage (recipientId, lat, long) {
-  var ret = ''
-  // var copy = ft
+  var ret = '1: Brown Food Truck\n 2: Yellow Food Truck\n 3: Blue Food Truck'
 
+  // var copy = ft
 
   for(var truck in ft) {
     ret.concat(JSON.stringify(truck.name))
@@ -386,7 +386,7 @@ function sendLocationMessage (recipientId, truck_id) {
   // var long = trucks.getJSONArray(truck_id).coordinate.long;
   var the_truck
   for(var truck in tf) {
-    if(parseInt(truck._id) === truck_id) {
+    if(parseInt(truck._id)-1 === truck_id) {
       the_truck = truck
       break
     }
