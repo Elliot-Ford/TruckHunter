@@ -1,3 +1,6 @@
+
+const request = require('request');
+
 /*
  * Authorization Event
  *
@@ -95,7 +98,7 @@ exports.receivedMessage = function (event) {
     }
   } else if (messageAttachments) {
     if(messageAttachments.type === "location") {
-      send
+      // send
     }
   }
 }
@@ -117,7 +120,7 @@ exports.receivedDeliveryConfirmation = function(event) {
   var sequenceNumber = delivery.seq;
 
   if (messageIDs) {
-    messageIDs.forEach(function(messageID) {
+    messageIDs.forEach(function (messageID) {
       console.log("Received delivery confirmation for message ID: %s",
         messageID);
     });
