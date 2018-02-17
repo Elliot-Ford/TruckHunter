@@ -55,7 +55,7 @@ function sendMessage(sender,text) {
     });
 };
 
-var token = "Replace with the access token from Facebook";
+var token = "BIGTOKEN";
 var host = (process.env.VCAP_APP_HOST || 'localhost');
 var port = (process.env.VCAP_APP_PORT || 3000);
 app.listen(port, host);
