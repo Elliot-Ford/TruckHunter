@@ -61,109 +61,6 @@ var state = 0;
 
 app.locals.foodtrucks = require("./foodtrucks.json");
 
-var trucks = {
-  '0':{
-    "_id": "0",
-    "truck_name": "Brown Food Truck",
-    "coordinate" : {
-      "lat": 43.66048866,
-      "long": -79.39713007
-    },
-    "discount": "None",
-    "url": "http://example.com"
-  },
-'1':{
-    "_id": "1",
-    "truck_name": "Yellow Food Truck",
-    "coordinate" : {
-      "lat": 43.65698027,
-      "long": -79.39547782
-    },
-    "discount": "None",
-    "url": "http://example.com"
-  },
-'2':{
-    "_id": "2",
-    "truck_name": "Blue Food Truck",
-    "coordinate" : {
-      "lat": 43.66059733,
-      "long": -79.40140014
-    },
-    "discount": "None",
-    "url": "http://example.com"
-  },
-'3':{
-    "_id": "3",
-    "truck_name": "Green Food Truck",
-    "coordinate" : {
-      "lat": 43.65802039,
-      "long": -79.39547782
-    },
-    "discount": "None",
-    "url": "http://example.com"
-  },
-  '4':{
-      "_id": "4",
-      "truck_name": "Black Food Truck",
-      "coordinate" : {
-        "lat": 43.6630655,
-        "long": -79.39805275
-      },
-      "discount": "None",
-      "url": "http://example.com"
-    },
-  '5':{
-    "_id": "5",
-    "truck_name": "Black Food Truck",
-    "coordinate" : {
-        "lat": 43.66512035,
-        "long": -79.41064433
-    },
-    "discount": "None",
-    "url": "http://example.com"
-  },
-  '6':{
-    "_id": "6",
-    "truck_name": "Black Food Truck",
-    "coordinate" : {
-        "lat": 43.66865931,
-        "long": -79.39313487
-    },
-    "discount": "None",
-    "url": "http://example.com"
-  },
-  '7':{
-    "_id": "7",
-    "truck_name": "Black Food Truck",
-    "coordinate" : {
-        "lat": 43.66536871,
-        "long": -79.38772754
-    },
-    "discount": "None",
-    "url": "http://example.com"
-  },
-  '8':{
-    "_id": "8",
-    "truck_name": "Black Food Truck",
-    "coordinate" : {
-        "lat": 43.66064979,
-        "long": -79.38562468
-    },
-    "discount": "None",
-    "url": "http://example.com"
-  },
-  '9':{
-    "_id": "9",
-    "truck_name": "Black Food Truck",
-    "coordinate" : {
-        "lat": 43.67124337,
-        "long": -79.3893154
-    },
-    "discount": "None",
-    "url": "http://example.com"
-    }
-  }
-
 /*
  * Verify that the callback came from Facebook. Using the App Secret from
  * the App Dashboard, we can verify the signature that is sent with each
@@ -487,9 +384,9 @@ function receivedMessage (event) {
 
 function sendTrucksMessage(recipientId) {
   var ret = "";
-  for (var truck in trucks) {
-    ret += "{0}: {1}\n".format(truck, truck.truck_name);
-  }
+  // for (var truck in trucks) {
+  //   ret += "{0}: {1}\n".format(truck, truck.truck_name);
+  // }
   var messageData = {
     recipient: {
       id: recipientId
@@ -505,8 +402,8 @@ function distance(x1, y1, x2, y2) {
 }
 
 function sendLocationMessage(recipientId, truck_id) {
-  var lat = trucks.getJSONArray(truck_id).coordinate.lat;
-  var long = trucks.getJSONArray(truck_id).coordinate.long;
+  // var lat = trucks.getJSONArray(truck_id).coordinate.lat;
+  // var long = trucks.getJSONArray(truck_id).coordinate.long;
   var messageData = {
     recipient: {
       id: recipientId
