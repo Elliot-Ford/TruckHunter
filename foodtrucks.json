@@ -6,7 +6,7 @@
     "truck_name": "Brown Food Truck",
     "lat": 43.66048866,
     "long": -79.39713007,
-    "discount": "None",
+    "discount": "Free Drink with an order of poutine.",
     "url": "http://example.com"
   },
   {
@@ -14,7 +14,7 @@
     "truck_name": "Yellow Food Truck",
     "lat": 43.65698027,
     "long": -79.39547782,
-    "discount": "None",
+    "discount": "15% off of a bowl of noodles.",
     "url": "http://example.com"
   },
   {
@@ -22,7 +22,7 @@
     "truck_name": "Blue Food Truck",
     "lat": 43.66059733,
     "long": -79.40140014,
-    "discount": "None",
+    "discount": "The false belief of superiority over the brown food truck.",
     "url": "http://example.com"
   },
   {
@@ -30,7 +30,7 @@
     "truck_name": "Green Food Truck",
     "lat": 43.65802039,
     "long": -79.39547782,
-    "discount": "None",
+    "discount": "$1000 off in a currency as imaginary as this truck.",
     "url": "http://example.com"
   },
   {
@@ -38,15 +38,15 @@
     "truck_name": "Black Food Truck",
     "lat": 43.6630655,
     "long": -79.39805275,
-    "discount": "None",
+    "discount": "Stickers!",
     "url": "http://example.com"
   },
   {
     "_id": 5,
-    "truck_name": "Pruple Food Truck",
+    "truck_name": "Purple Food Truck",
     "lat": 43.66512035,
     "long": -79.41064433,
-    "discount": "None",
+    "discount": "Autograph of the Purple People Eaters.",
     "url": "http://example.com"
   },
   {
@@ -54,7 +54,7 @@
     "truck_name": "Red Food Truck",
     "lat": 43.66865931,
     "long": -79.39313487,
-    "discount": "None",
+    "discount": "15% off of dumplings.",
     "url": "http://example.com"
   },
   {
@@ -62,7 +62,7 @@
     "truck_name": "Golden Food Truck",
     "lat": 43.66536871,
     "long": -79.38772754,
-    "discount": "None",
+    "discount": "Free shake with fries.",
     "url": "http://example.com"
   },
   {
@@ -70,7 +70,7 @@
     "truck_name": "White Food Truck",
     "lat": 43.66064979,
     "long": -79.38562468,
-    "discount": "None",
+    "discount": "Food",
     "url": "http://example.com"
   },
   {
@@ -78,7 +78,7 @@
     "truck_name": "Grey Food Truck",
     "lat": 43.67124337,
     "long": -79.3893154,
-    "discount": "None",
+    "discount": "Free nuts with a plate of bolts.",
     "url": "http://example.com"
   }
   ]
