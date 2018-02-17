@@ -321,6 +321,7 @@ function sendLocationMessage(recipientId) {
       }
     }
   }
+  callSendAPI(messageData);
 }
 
 function sendUnknownMessage(recipientId) {
