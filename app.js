@@ -248,8 +248,6 @@ app.post('/webhook', function (req, res) {
          receivedPostback(messagingEvent);
        } else if (messagingEvent.read) {
          receivedMessageRead(messagingEvent);
-       } else if (messagingEvent.account_linking) {
-         receivedAccountLink(messagingEvent);
        } else {
          console.log("Webhook received unknown messagingEvent: ", messagingEvent);
        }
@@ -456,8 +454,8 @@ function receivedMessage (event) {
 
 function sendTrucksMessage(recipientId) {
   var ret = "";
-  forEach(truck in trucks) {
-    ret += "{0}: {1}".format(truck,truck.truck_name);
+  for (var truck in trucks) {
+    ret += "{0}: {1}\n".format(truck, truck.truck_name);
   }
   var messageData = {
     recipient: {
@@ -468,6 +466,10 @@ function sendTrucksMessage(recipientId) {
     }
   }
   callSendAPI(messageData);
+}
+
+function distance(x1, y1, x2, y2) {
+  return Math.sqrt(abs(x1-x2)^2 + abs(y1-y2));
 }
 
 function sendLocationMessage(recipientId, truck_id) {
