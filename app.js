@@ -347,11 +347,20 @@ function receivedMessage (event) {
   }
 }
 
-function sendTrucksMessage (recipientId) {
-  var ret = 'hello'
-  // for (var truck in trucks) {
-  //   ret += "{0}: {1}\n".format(truck, truck.truck_name);
-  // }
+function sendTrucksMessage (recipientId, lat, long) {
+  var ret = ''
+  var copy = trucks
+
+  for (var i = 0; i < copy.length && i < 5; i++) {
+      var smallest = 0
+      for (var j = 0; j < copy.length; j++) {
+        if (distance(copy[smallest].lat, copy[smallest].long, lat, long) > distance(copy[j].lat, copy[j].long, lat, long)) {
+          smallest = j
+        }
+      }
+      ret += "{0}: {1} ({2})\n".format(copy[smallest]._id, copy[smallest].truck_name, distance(copy[smallest].lat, copy[smallest].long, lat, long,))
+      copy.pop(smallest)
+  }
   var messageData = {
     recipient: {
       id: recipientId
