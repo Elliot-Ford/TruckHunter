@@ -461,8 +461,13 @@ function receivedMessage (event) {
 
 function sendTrucksMessage(recipientId) {
   var ret = "";
+<<<<<<< HEAD
   forEach(truck in trucks) {
     ret += "{0}: {1}".format(truck,truck.truck_name);
+=======
+  for (var truck in trucks) {
+    ret += "{0}: {1}\n".format(truck, truck.truck_name);
+>>>>>>> e54e5813c337136d032e8f8ea3201adadbd72a7b
   }
   var messageData = {
     recipient: {
@@ -474,9 +479,17 @@ function sendTrucksMessage(recipientId) {
   }
   callSendAPI(messageData);
 }
+<<<<<<< HEAD
 // function rankTrucks(lati, longi) {
 //   var
 // }
+=======
+
+function distance(x1, y1, x2, y2) {
+  return Math.sqrt(abs(x1-x2)^2 + abs(y1-y2));
+}
+
+>>>>>>> e54e5813c337136d032e8f8ea3201adadbd72a7b
 function sendLocationMessage(recipientId, truck_id) {
   var lat = trucks.getJSONArray(truck_id).coordinate.lat;
   var long = trucks.getJSONArray(truck_id).coordinate.long;
