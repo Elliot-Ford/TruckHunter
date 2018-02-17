@@ -329,8 +329,9 @@ function receivedMessage (event) {
     //   sendLocationMessage();
     //   sendTrucksMessage(senderID);
     // }
-    if (messageAttachments[0].payload.coordinates) {
+
       lat = messageAttachments[0].payload.coordinates.lat
+
       long = messageAttachments[0].payload.coordinates.long
       sendTrucksMessage(senderID, lat, long)
     //   app.get('/', function (req, res) {
@@ -342,7 +343,7 @@ function receivedMessage (event) {
     //     })
     //   }
     // )
-    }
+
   }
 }
 
