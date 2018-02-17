@@ -354,7 +354,7 @@ function sendTrucksMessage (recipientId, lat, long) {
 
 
   for(var truck in ft) {
-    ret += JSON.stringify(truck.name)
+    ret.concat(JSON.stringify(truck.name))
   }
   // for (var i = 0; i < copy.length && i < 5; i++) {
   //     var smallest = 0
