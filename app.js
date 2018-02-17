@@ -264,7 +264,7 @@ function receivedMessage (event) {
     // If we receive a text message, check to see if it matches any special
     // keywords and send back the corresponding example. Otherwise, just echo
     // the text we received.
-    switch (messageText.replace(/[^\w\s]/gi, '').trim().toLowerCase()) {
+    switch (messageText.replace(/[^\w\s\d]/gi, '').trim().toLowerCase()) {
       case 'hello':
       case 'hi':
         sendHiMessage(senderID);
@@ -280,6 +280,7 @@ function receivedMessage (event) {
       case '7':
       case '8':
       case '9':
+      case 'location':
         if(true) {
           sendLocationMessage(senderID);
         }
