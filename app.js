@@ -59,6 +59,8 @@ if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
 
 var state = 0;
 
+app.locals.foodtrucks = require("./foodtrucks.json");
+
 var trucks = {
   '0':{
     "_id": "0",
@@ -368,6 +370,11 @@ function receivedMessage (event) {
     // keywords and send back the corresponding example. Otherwise, just echo
     // the text we received.
     switch (messageText.replace(/[^\w\s\d]/gi, '').trim().toLowerCase()) {
+      case "reset":
+        state = 0;
+        sendHiMessage(senderID);
+        break;
+
       case 'hello':
       case 'hi':
         if(state == 0) {
@@ -442,7 +449,7 @@ function receivedMessage (event) {
       case 'stat':
       var messageData = {
         recipient: {
-          id: recipientId
+          id: senderID
         },
         message: {
           text: JSON.stringify(message)
