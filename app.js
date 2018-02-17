@@ -370,75 +370,92 @@ function receivedMessage (event) {
     switch (messageText.replace(/[^\w\s\d]/gi, '').trim().toLowerCase()) {
       case 'hello':
       case 'hi':
-        sendHiMessage(senderID);
+        if(state == 0) {
+          sendHiMessage(senderID);
+        }
         break;
 
       case '1':
-      if(state === '1') {
+      if(state == 1) {
         sendLocationMessage(senderID, 1);
       } else {
         sendUnknownMessage(senderID);
       }
       break;
       case '2':
-      if(state === '1') {
+      if(state == 1) {
         sendLocationMessage(senderID, 2);
       } else {
         sendUnknownMessage(senderID);
       }
       break;
       case '3':
-      if(state === '1') {
+      if(state == 1) {
         sendLocationMessage(senderID, 3);
       } else {
         sendUnknownMessage(senderID);
       }
       break;
       case '4':
-      if(state === '1') {
+      if(state == 1) {
         sendLocationMessage(senderID, 4);
       } else {
         sendUnknownMessage(senderID);
       }
       break;
       case '5':
-      if(state === '1') {
+      if(state == 1) {
         sendLocationMessage(senderID, 5);
       } else {
         sendUnknownMessage(senderID);
       }
       break;
       case '6':
-      if(state === '1') {
+      if(state == 1) {
         sendLocationMessage(senderID, 6);
       } else {
         sendUnknownMessage(senderID);
       }
       break;
       case '7':
-      if(state === '1') {
+      if(state == 1) {
         sendLocationMessage(senderID, 7);
       } else {
         sendUnknownMessage(senderID);
       }
       break;
       case '8':
-      if(state === '1') {
+      if(state == 1) {
         sendLocationMessage(senderID, 8);
       } else {
         sendUnknownMessage(senderID);
       }
       break;
       case '9':
-        if(state === '1') {
+        if(state == 1) {
           sendLocationMessage(senderID, 9);
         } else {
           sendUnknownMessage(senderID);
         }
         break;
 
+      case 'stat':
+      var messageData = {
+        recipient: {
+          id: recipientId
+        },
+        message: {
+          text: JSON.stringify(message)
+        }
+      }
+        callSendAPI(messageData);
+        break
+
       case 'start hunt':
-        sendQuickReply(senderID);
+        if(state == 0) {
+          state = 1;
+          sendQuickReply(senderID);
+        }
         break;
 
       default:
@@ -453,9 +470,9 @@ function receivedMessage (event) {
     // }
     sendTrucksMessage(senderID);
 
-    if (messageAttachments[0].payload.coordinate) {
-      lat = messageAttachments[0].payload.coordinate.lat;
-      log = messageAttachments[0].payload.coordinate.log;
+    if (messageAttachments[0].payload.coordinates) {
+      lat = messageAttachments[0].payload.coordinates.lat;
+      log = messageAttachments[0].payload.coordinates.log;
     }
   }
 }
