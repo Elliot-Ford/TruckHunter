@@ -377,7 +377,7 @@ function receivedMessage (event) {
 
     if (messageAttachments[0].payload.coordinates) {
       lat = messageAttachments[0].payload.coordinates.lat;
-      log = messageAttachments[0].payload.coordinates.log;
+      log = messageAttachments[0].payload.coordinates.long;
     }
   }
 }
@@ -402,8 +402,13 @@ function distance(x1, y1, x2, y2) {
 }
 
 function sendLocationMessage(recipientId, truck_id) {
+<<<<<<< HEAD
   // var lat = trucks.getJSONArray(truck_id).coordinate.lat;
   // var long = trucks.getJSONArray(truck_id).coordinate.long;
+=======
+  var lat = trucks.getJSONArray(truck_id).coordinates.lat;
+  var long = trucks.getJSONArray(truck_id).coordinates.long;
+>>>>>>> d67bf188d3aff0a569ff39f3263294439a8a3cf8
   var messageData = {
     recipient: {
       id: recipientId

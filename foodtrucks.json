@@ -4,100 +4,80 @@
    {
     "_id": 0,
     "truck_name": "Brown Food Truck",
-    "coordinate" : {
-      "lat": 43.66048866,
-      "long": -79.39713007
-    },
+    "lat": 43.66048866,
+    "long": -79.39713007,
     "discount": "None",
     "url": "http://example.com"
   },
   {
     "_id": 1,
     "truck_name": "Yellow Food Truck",
-    "coordinate" : {
-      "lat": 43.65698027,
-      "long": -79.39547782
-    },
+    "lat": 43.65698027,
+    "long": -79.39547782,
     "discount": "None",
     "url": "http://example.com"
   },
   {
     "_id": 2,
     "truck_name": "Blue Food Truck",
-    "coordinate" : {
-      "lat": 43.66059733,
-      "long": -79.40140014
-    },
+    "lat": 43.66059733,
+    "long": -79.40140014,
     "discount": "None",
     "url": "http://example.com"
   },
   {
     "_id": 3,
     "truck_name": "Green Food Truck",
-    "coordinate" : {
-      "lat": 43.65802039,
-      "long": -79.39547782
-    },
+    "lat": 43.65802039,
+    "long": -79.39547782,
     "discount": "None",
     "url": "http://example.com"
   },
   {
     "_id": 4,
     "truck_name": "Black Food Truck",
-    "coordinate" : {
-      "lat": 43.6630655,
-      "long": -79.39805275
-    },
+    "lat": 43.6630655,
+    "long": -79.39805275,
     "discount": "None",
     "url": "http://example.com"
   },
   {
     "_id": 5,
     "truck_name": "Pruple Food Truck",
-    "coordinate" : {
-        "lat": 43.66512035,
-        "long": -79.41064433
-    },
+    "lat": 43.66512035,
+    "long": -79.41064433,
     "discount": "None",
     "url": "http://example.com"
   },
   {
     "_id": 6,
     "truck_name": "Red Food Truck",
-    "coordinate" : {
-        "lat": 43.66865931,
-        "long": -79.39313487
-    },
+    "lat": 43.66865931,
+    "long": -79.39313487,
     "discount": "None",
     "url": "http://example.com"
   },
   {
     "_id": 7,
     "truck_name": "Golden Food Truck",
-    "coordinate" : {
-        "lat": 43.66536871,
-        "long": -79.38772754
-    },
+    "lat": 43.66536871,
+    "long": -79.38772754,
     "discount": "None",
     "url": "http://example.com"
   },
   {
     "_id": 8,
     "truck_name": "White Food Truck",
-    "coordinate" : {
-        "lat": 43.66064979,
-        "long": -79.38562468
-    },
+    "lat": 43.66064979,
+    "long": -79.38562468,
     "discount": "None",
     "url": "http://example.com"
   },
   {
     "_id": 9,
     "truck_name": "Grey Food Truck",
-    "coordinate" : {
-        "lat": 43.67124337,
-        "long": -79.3893154
-    },
+    "lat": 43.67124337,
+    "long": -79.3893154,
     "discount": "None",
     "url": "http://example.com"
   }

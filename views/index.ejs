@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+       #map {
+        height: 700px;
+        width: 100%;
+       }
+    </style>
+  </head>
+  <body>
+    <h3>My Food Truck Hunting Map</h3>
+    <div id="map"></div>
+    <script>
+      function initMap() {
+        var bahen = new google.maps.LatLng(43.6596184, -79.3969208);
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 15,
+          center: bahen
+        });
+
+        foodtrucks.Categories.forEach(function (truck) {
+          var thisTruck = new google.maps.LatLng(truck.lat, truck.long);
+          var contentString = '<div id="content">'+'<div id="siteNotice">'+'</div>'+
+        '<h1 id="firstHeading" class="firstHeading">' + truck.truck_name + '</h1>'+
+        '<div id="bodyContent">'+ '<p><b>' + truck.truck_name + '</b>, specialises in' +
+        '     cuisine.' + '<p>Direction:' + truck.truck_name + ',<a href="https://localhost:8888/">'+
+        'https://localhost:8888/</a></p>'+'</div>'+'</div>';
+          var InfoWindow = new google.maps.InfoWindow({content: contentString});
+          var marker = new google.maps.Marker({
+            position: thisTruck,
+            map: map
+          });
+          marker.addListener('click', function() {infowindow.open(map, marker);});
+        });
+
+      //   var truck1 = new google.maps.LatLng(43.66048866, -79.39713007);
+      //   var truck2 = new google.maps.LatLng(43.66059733, -79.40140014);
+      //   var truck3 = new google.maps.LatLng(43.65802039, -79.39547782);
+      //   var truck4 = new google.maps.LatLng(43.6630655, -79.39805275);
+      //   var truck5 = new google.maps.LatLng(43.65698027, -79.39949041);
+      //
+      //
+      //
+      //   var contentString = '<div id="content">'+'<div id="siteNotice">'+'</div>'+
+      // '<h1 id="firstHeading" class="firstHeading">Food Truck 1</h1>'+
+      // '<div id="bodyContent">'+
+      // '<p><b>Food truck 1</b>, also referred to as the <b>brown food truck</b>,' +
+      // 'is a really great food truck which serves delicious food, and the owner will always' +
+      // 'ask if you want a drink with that.'+
+      // '<p>Attribution: Food Truck 1, <a href="https://localhost:8888/">'+
+      // 'https://localhost:8888/</a>' + '(last visited long time ago).</p>'+'</div>'+'</div>';
+      //
+      //
+      //
+      //   var infowindow1 = new google.maps.InfoWindow({content: contentString});
+      //   var marker1 = new google.maps.Marker({
+      //     position: truck1,
+      //     map: map
+      //   });
+      //   marker1.addListener('click', function() {infowindow1.open(map, marker1);});
+      //
+      //   var marker2 = new google.maps.Marker({
+      //     position: truck2,
+      //     map: map
+      //   });
+      //   var marker3 = new google.maps.Marker({
+      //     position: truck3,
+      //     map: map
+      //   });
+      //   var marker4 = new google.maps.Marker({
+      //     position: truck4,
+      //     map: map
+      //   });
+      //   var marker5 = new google.maps.Marker({
+      //     position: truck5,
+      //     map: map
+      //   });
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB6vp4DRwF2xSUVdOefzuVkncvc7kDMyo8&callback=initMap">
+    </script>
+  </body>
+</html>
