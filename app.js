@@ -317,6 +317,10 @@ function sendLocationMessage(recipientId) {
             image_url: "https://maps.googleapis.com/maps/api/staticmap?center="
             + lat + "," + long + "&zoom=15&size=600x300&maptype=roadmap&markers=color:blue%7Clabel:S%7C"
             + lat + "," + long + "&key=AIzaSyB6vp4DRwF2xSUVdOefzuVkncvc7kDMyo8",
+            default_action: {
+              type: "web_url",
+              url: "https://www.google.ca/maps/place/" + lat + "," + long + "/@" + lat + "," + long + ",17z/data=!4m5!3m4!1s0x0:0x0!8m2!3d" + lat + "!4d" + long,
+            }
           }]
         }
       }
