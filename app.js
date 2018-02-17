@@ -256,66 +256,37 @@ function receivedMessage (event) {
     // the text we received.
     switch (messageText.replace(/[^\w\s\d]/gi, '').trim().toLowerCase()) {
       case 'reset':
-        state = 0
         sendHiMessage(senderID)
         break
 
       case 'hello':
       case 'hi':
-        if (state === 0) {
-          sendHiMessage(senderID)
-        }
+        sendHiMessage(senderID)
         break
 
       case '1':
-      // if(state == 1) {
-        // } else {
         sendLocationMessage(senderID, 1)
-        // sendUnknownMessage(senderID);
-      // }
         break
 
       case '2':
-      // if(state == 1) {
         sendLocationMessage(senderID, 2)
-      // } else {
-        // sendUnknownMessage(senderID);
-      // }
         break
+
       case '3':
-      // if(state == 1) {
         sendLocationMessage(senderID, 3)
-      // } else {
         sendUnknownMessage(senderID)
-      // }
         break
       case '4':
-      // if(state == 1) {
         sendLocationMessage(senderID, 4)
-      // } else {
-        // sendUnknownMessage(senderID);
-      // }
         break
       case '5':
-      // if(state == 1) {
         sendLocationMessage(senderID, 5)
-      // } else {
-        // sendUnknownMessage(senderID);
-      // }
         break
       case '6':
-      // if(state == 1) {
         sendLocationMessage(senderID, 6)
-      // } else {
-        // sendUnknownMessage(senderID);
-      // }
         break
       case '7':
-      // if(state == 1) {
         sendLocationMessage(senderID, 7)
-      // } else {
-        // sendUnknownMessage(senderID);
-      // }
         break
       case '8':
         if (state === 1) {
@@ -332,23 +303,9 @@ function receivedMessage (event) {
         }
         break
 
-      case 'stat':
-        var messageData = {
-          recipient: {
-            id: senderID
-          },
-          message: {
-            text: JSON.stringify(message)
-          }
-        }
-        callSendAPI(messageData)
-        break
-
       case 'start hunt':
-        // if(state == 0) {
         state = 1
         sendQuickReply(senderID)
-        // }
         break
 
       default:
