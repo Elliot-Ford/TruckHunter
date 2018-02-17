@@ -313,8 +313,7 @@ function sendLocationMessage(recipientId) {
           "elements": {
             "element": {
               "title": "Here's your food truck",
-              "image_url": "https://maps.googleapis.com/maps/api/staticmap?size=764x400&center=" + lat + "," + long +
-                          "&zoom=15&markers=" + lat + "," + long
+              "image_url": "https://en.wiktionary.org/wiki/cat#/media/File:Cat03.jpg"
             }
           }
         }
