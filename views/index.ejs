@@ -12,6 +12,7 @@
     <h3>My Food Truck Hunting Map</h3>
     <div id="map"></div>
     <script>
+      var trucks = JSON.parse('<%- JSON.stringify(foodtrucks) %>');
       function initMap() {
         var bahen = new google.maps.LatLng(43.6596184, -79.3969208);
 
@@ -20,19 +21,19 @@
           center: bahen
         });
 
-        foodtrucks.Categories.forEach(function (truck) {
+        trucks.Categories.forEach(function (truck) {
           var thisTruck = new google.maps.LatLng(truck.lat, truck.long);
           var contentString = '<div id="content">'+'<div id="siteNotice">'+'</div>'+
         '<h1 id="firstHeading" class="firstHeading">' + truck.truck_name + '</h1>'+
         '<div id="bodyContent">'+ '<p><b>' + truck.truck_name + '</b>, specialises in' +
         '     cuisine.' + '<p>Direction:' + truck.truck_name + ',<a href="https://localhost:8888/">'+
         'https://localhost:8888/</a></p>'+'</div>'+'</div>';
-          var InfoWindow = new google.maps.InfoWindow({content: contentString});
+          var infoWindow = new google.maps.InfoWindow({content: contentString});
           var marker = new google.maps.Marker({
             position: thisTruck,
             map: map
           });
-          marker.addListener('click', function() {infowindow.open(map, marker);});
+          marker.addListener('click', function() {infoWindow.open(map, marker);});
         });
 
       //   var truck1 = new google.maps.LatLng(43.66048866, -79.39713007);

@@ -1,8 +1,13 @@
+var express = require('express');
+var router = express.Router();
+var ft = require('../foodtrucks.json');
 
-/*
- * GET home page.
- */
+/* GET home page. */
+router.get('/', function(req, res, next) {
+  res.render('index', {
+    title: 'Express',
+    foodtrucks: ft
+  });
+});
 
-exports.index = function(req, res){
-  res.render('index.html', { title: 'Cloudant Boiler Plate' });
-};
+module.exports = router;
