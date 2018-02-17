@@ -301,7 +301,8 @@ function receivedMessage (event) {
 }
 
 function sendLocationMessage(recipientId) {
-  var lat, long = 0;
+  var lat = 43.6596184;
+  var long = -79.3969208;
   var messageData = {
     recipient: {
       id: recipientId
@@ -312,8 +313,10 @@ function sendLocationMessage(recipientId) {
         payload: {
           template_type: "generic",
           elements:[{
-            title:"Welcome!",
-            image_url: "http://www.catster.com/wp-content/uploads/2017/06/small-kitten-meowing.jpg",
+            title:"Here's your food truck! :)",
+            image_url: "https://maps.googleapis.com/maps/api/staticmap?center="
+            + lat + "," + long + "&zoom=15&size=600x300&maptype=roadmap&markers=color:blue%7Clabel:S%7C"
+            + lat + "," + long + "&key=AIzaSyB6vp4DRwF2xSUVdOefzuVkncvc7kDMyo8",
           }]
         }
       }
