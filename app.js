@@ -87,9 +87,19 @@ app.post('/webhook', function (req, res) {
   if (data.object == 'page') {
     // Iterate over each entry
     // There may be multiple if batched
-    data.entry.forEach(function(pageEntry) {
-      var pageID = pageEntry.id;
-      var timeOfEvent = pageEntry.time;
+
+    // data.entry.forEach(function(pageEntry) {
+    //   var pageID = pageEntry.id;
+    //   var timeOfEvent = pageEntry.time;
+    
+    // Gets the body of the webhook event
+    let webhook_event = entry.messaging[0];
+    console.log(webhook_event);
+
+    // Get the sender PSID
+    let sender_psid = webhook_event.sender.id;
+    console.log('Sender PSID: ' + sender_psid);
+
 
       // Iterate over each messaging event
       pageEntry.messaging.forEach(function(messagingEvent) {
