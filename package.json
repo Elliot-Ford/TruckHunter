@@ -1,34 +1,22 @@
-“body-parser”: “^1.15,0”,
-“express”: “^4.13.4”,
-“request”: “2.72.0”
-</li>
-    <li>To push the Broker App to Bluemix, use the following CF CLI command: <code>‘cf push using manifest file path/manifest.yml</code>, replacing <code>path</code> with the path to your file.</li>
-</ul>
-<h3>Connect your Facebook App Application to your Broker App</h3>
-<ul>
-    <li>In your Facebook Developer homepage, under ‘Webhooks’, click New Subscription / Page</li>
-    <li>Under ‘Callback URL’, fill out the Broker App URL; you can find it in Bluemix just under the name of the app’
-<img src="/blogs/bluemix/wp-content/uploads/2016/05/Broker_app_URL.png" alt="Broker app URL" /></li>
-    <li>Under ‘Verify Token’ fill out the token you’ve defined in the Broker App (in our example, we’ve used ‘mySecretAccessToken’. You may of course have your own).</li>
-    <li>Under ‘Subscription Fields’, select messages, message_deliveries, messaging_options and messaging_postbacks.</li>
-    <li>To get the Facebook access token, Click ‘Messenger’ and then ‘Get Started’. Select the page you’ve created earlier, click ‘okay’ and copy the Page Access Token than has been generated.</li>
-    <li>To subscribe your app to the page, use the Terminal to run the following command: <code>curl -ik -X POST “Facebook_access_token_goes_here”</code></li>
-    <li>Open again the <code>app.js</code> file and use Facebook token to the <code>token</code> var defined at the last section of the code.</li>
-    <li>Push the Broker App to Bluemix as described previously.</li>
-</ul>
-<h3>Create the Weather App in Bluemix</h3>
-<ul>
-    <li>Create a Bluemix app with AlchemyAPI, Insights for Weather, and Natural Language Classifier services bound to it.</li>
-    <li>We've trained a basic Watson Natural Language Classifier that identifies whether a question is about weather conditions or temperature. <a href="http://www.ibm.com/smarterplanet/us/en/ibmwatson/developercloud/doc/nl-classifier/get_start.shtml">Getting started with the Natural Language Classifier service</a> explains how to train your own classifier.</li>
-    <li>After you train your own classifier, you should obtain a classifier id.</li>
-    <li>Similar to the previous section for the Broker app, download the starter code for your Node.js app.</li>
-    <li>Open the <code>app.js</code> file and replace the default sample code with the Weather sample code available at <a href="https://gist.github.com/eyal-he/a97e0bc70687dd0c579fab63b5727e91">this Gist</a> on GitHub.</li>
-    <li>Replace with the classifier id you obtained.</li>
-    <li>Open the <code>package.json</code> file, and under <code>dependencies</code>, apply the following edits:
-"JSON": "^1.0.0",
-"body-parser": "^1.15.0",
-"cfenv": "^1.0.3",
-"express": "^4.13.4",
-"node-geocoder": "^3.9.1",
-"request": "^2.71.0",
-"watson-developer-cloud": "^1.4.1"
+{
+  "name": "cloudant_boilerplate_nodejs",
+  "version": "0.0.2",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "4.15.x",
+    "ejs": "2.5.x",
+    "cloudant": "1.7.x",
+    "body-parser": "1.17.x",
+    "method-override": "2.3.x",
+    "morgan": "1.8.x",
+    "errorhandler": "1.5.x",
+    "connect-multiparty": "2.0.x"
+  },
+  "repository": {},
+  "engines": {
+    "node": "6.x"
+  }
+}
