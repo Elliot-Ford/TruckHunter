@@ -303,30 +303,33 @@ function receivedMessage (event) {
 function sendLocationMessage(recipientId) {
   var lat, long = 0;
   var messageData = {
-    "recipient": {
-      "id": "recipientId"
+    recipient: {
+      id: recipientId
     },
-    "message": {
-      "attachment": {
-        "type": "template",
-        "payload": {
-          "template_type": "generic",
-          "elements": [
-            {
-              "title": "Here's your food truck",
-              "image_url": "https://en.wiktionary.org/wiki/cat#/media/File:Cat03.jpg",
-              "default_action": {
-                "type": "web_url",
-                "url": "https://www.google.com",
-                "messenger_extensions": TRUE,
-                "webview_height_ratio": "FULL",
-              },
-            },
-          ]
+    message: {
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "button",
+          text: "This is test text",
+          buttons:[{
+            type: "web_url",
+            url: "https://www.oculus.com/en-us/rift/",
+            title: "Open Web URL"
+          }, {
+            type: "postback",
+            title: "Trigger Postback",
+            payload: "DEVELOPER_DEFINED_PAYLOAD"
+          }, {
+            type: "phone_number",
+            title: "Call Phone Number",
+            payload: "+16505551234"
+          }]
         }
       }
     }
-  }
+  };
+
   callSendAPI(messageData);
 }
 
