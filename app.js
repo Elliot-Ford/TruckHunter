@@ -53,9 +53,6 @@ if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
 }
 
 var state = 0
-
-app.locals.foodtrucks = require('./foodtrucks.json')
-
 /*
  * Verify that the callback came from Facebook. Using the App Secret from
  * the App Dashboard, we can verify the signature that is sent with each
@@ -323,17 +320,20 @@ function receivedMessage (event) {
         sendUnknownMessage(senderID)
     }
   } else if (event.message.attachments) {
-    var lat = null
-    var long = null
-    sendTextMessage(senderID, JSON.stringify(event.message.attachments[3].payload.coordinates.lat))
+    var lat = parseInt(event.message.attachments[0].payload.coordinates.lat)
+    var long = parseInt(event.message.attachments[0].payload.coordinates.long)
+
+    console.log("lat: %d long: %d")
+    //JSON.parse(JSON.stringify(event.message.attachments))
     // if(messageAttachments.type === "location") {
     //   sendLocationMessage();
     //   sendTrucksMessage(senderID);
     // }
-
-      lat = messageAttachments.payload.coordinates.lat
-      console.log(lat);
-      long = messageAttachments.payload.coordinates.long
+    // lat = cor.payload.coordinates.lat
+    // long = cor.payload.coordinates.long
+      // lat = messageAttachments.payload.coordinates.lat
+      // console.log(lat);
+      // long = messageAttachments.payload.coordinates.long
       sendTrucksMessage(senderID, lat, long)
     //   app.get('/', function (req, res) {
     //     res.render('index', {
@@ -353,7 +353,7 @@ function receivedMessage (event) {
 
 function sendTrucksMessage (recipientId, lat, long) {
   var ret = 'Hi'
-  var copy = trucks
+  var copy = ft
 
   for (var i = 0; i < copy.length && i < 5; i++) {
       var smallest = 0
