@@ -85,12 +85,12 @@ function verifyRequestSignature (req, res, buf) {
   }
 }
 
-// app.get('/', function (req, res) {
-//   res.render('index', {
-//     title: 'Express',
-//     foodtrucks: ft
-//   })
-// })
+app.get('/', function (req, res) {
+  res.render('index', {
+    title: 'Express',
+    foodtrucks: ft
+  })
+})
 
 /*
  * Use your own validation token. Check that the token used in the Webhook
@@ -329,20 +329,19 @@ function receivedMessage (event) {
     //   sendLocationMessage();
     //   sendTrucksMessage(senderID);
     // }
-    sendTrucksMessage(senderID)
-
     if (messageAttachments[0].payload.coordinates) {
       lat = messageAttachments[0].payload.coordinates.lat
       long = messageAttachments[0].payload.coordinates.long
-
-      app.get('/', function (req, res) {
-        res.render('index', {
-          title: 'Express',
-          foodtrucks: ft,
-          user_lat: lat,
-          user_long: long
-        })
-      })
+      sendTrucksMessage(senderID, lat, long)
+    //   app.get('/', function (req, res) {
+    //     res.render('index', {
+    //       title: 'Express',
+    //       foodtrucks: ft,
+    //       user_lat: lat,
+    //       user_long: long
+    //     })
+    //   }
+    // )
     }
   }
 }
