@@ -352,10 +352,6 @@ function sendTrucksMessage (recipientId, lat, long) {
   var ret = '1: Brown Food Truck\n 2: Yellow Food Truck\n 3: Blue Food Truck'
 
   // var copy = ft
-
-  for(var truck in ft) {
-    ret.concat(JSON.stringify(truck.name))
-  }
   // for (var i = 0; i < copy.length && i < 5; i++) {
   //     var smallest = 0
   //     for (var j = 0; j < copy.length; j++) {
