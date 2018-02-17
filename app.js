@@ -384,6 +384,13 @@ function distance (x1, y1, x2, y2) {
 function sendLocationMessage (recipientId, truck_id) {
   // var lat = trucks.getJSONArray(truck_id).coordinate.lat;
   // var long = trucks.getJSONArray(truck_id).coordinate.long;
+  var the_truck
+  for(var truck in tf) {
+    if(parseInt(truck._id) === truck_id) {
+      the_truck = truck
+      break
+    }
+  }
   var lat = 0;
   var long = 0;
   var messageData = {
@@ -397,10 +404,10 @@ function sendLocationMessage (recipientId, truck_id) {
           template_type: 'generic',
           elements: [{
             title: 'Here\'s your food truck! :)',
-            image_url: 'https://maps.googleapis.com/maps/api/staticmap?center=' + lat + ',' + long + '&zoom=15&size=600x300&maptype=roadmap&markers=color:blue%7Clabel:S%7C' + lat + ',' + long + '&key=AIzaSyB6vp4DRwF2xSUVdOefzuVkncvc7kDMyo8',
+            image_url: 'https://maps.googleapis.com/maps/api/staticmap?center=' + the_truck.lat + ',' + the_truck.long + '&zoom=15&size=600x300&maptype=roadmap&markers=color:blue%7Clabel:S%7C' + the_truck.lat + ',' + the_truck.long + '&key=AIzaSyB6vp4DRwF2xSUVdOefzuVkncvc7kDMyo8',
             default_action: {
               type: 'web_url',
-              url: 'https://www.google.ca/maps/place/' + lat + ',' + long + '/@' + lat + ',' + long + ',17z/data=!4m5!3m4!1s0x0:0x0!8m2!3d' + lat + '!4d' + long
+              url: 'https://www.google.ca/maps/place/' + the_truck.lat + ',' + the_truck.long + '/@' + the_truck.lat + ',' + the_truck.long + ',17z/data=!4m5!3m4!1s0x0:0x0!8m2!3d' + the_truck.lat + '!4d' + the_truck.long
             }
           }]
         }
