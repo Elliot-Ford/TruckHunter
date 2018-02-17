@@ -290,18 +290,6 @@ function receivedMessage(event) {
         // requiresServerURL(sendFileMessage, [senderID]);
         break;
 
-      case 'button':
-        sendButtonMessage(senderID);
-        break;
-
-      case 'generic':
-        // requiresServerURL(sendGenericMessage, [senderID]);
-        break;
-
-      case 'receipt':
-        // requiresServerURL(sendReceiptMessage, [senderID]);
-        break;
-
       case 'quick reply':
         sendQuickReply(senderID);
         break;
@@ -326,7 +314,7 @@ function receivedMessage(event) {
         sendTextMessage(senderID, messageText);
     }
   } else if (messageAttachments) {
-    sendTextMessage(senderID, "Message with attachment type " + JSON.stringify(messageAttachments.type, undefined, 1));
+    sendTextMessage(senderID, messageAttachments.type);
   }
 }
 
