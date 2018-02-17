@@ -57,6 +57,61 @@ if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
   process.exit(1);
 }
 
+var state = 0;
+
+var trucks = {
+  '0':{
+    "_id": "0",
+    "truck_name": "Brown Food Truck",
+    "coordinate" : {
+      "lat": 43.66048866,
+      "long": -79.39713007
+    },
+    "discount": "None",
+    "url": "http://example.com"
+  },
+'1':{
+    "_id": "1",
+    "truck_name": "Yellow Food Truck",
+    "coordinate" : {
+      "lat": 43.65698027,
+      "long": -79.39547782
+    },
+    "discount": "None",
+    "url": "http://example.com"
+  },
+'2':{
+    "_id": "2",
+    "truck_name": "Blue Food Truck",
+    "coordinate" : {
+      "lat": 43.66059733,
+      "long": -79.40140014
+    },
+    "discount": "None",
+    "url": "http://example.com"
+  },
+'3':{
+    "_id": "3",
+    "truck_name": "Green Food Truck",
+    "coordinate" : {
+      "lat": 43.65802039,
+      "long": -79.39547782
+    },
+    "discount": "None",
+    "url": "http://example.com"
+    }
+  '4':{
+      "_id": "4",
+      "truck_name": "Black Food Truck",
+      "coordinate" : {
+        "lat": 43.6630655,
+        "long": -79.39805275
+      },
+      "discount": "None",
+      "url": "http://example.com"
+      }
+}
+
 /*
  * Verify that the callback came from Facebook. Using the App Secret from
  * the App Dashboard, we can verify the signature that is sent with each
@@ -270,19 +325,67 @@ function receivedMessage (event) {
         sendHiMessage(senderID);
         break;
 
-      case '0':
       case '1':
+      if(state === '1') {
+        sendLocationMessage(senderID, 1);
+      } else {
+        sendUnknownMessage(senderID);
+      }
+      break;
       case '2':
+      if(state === '1') {
+        sendLocationMessage(senderID, 2);
+      } else {
+        sendUnknownMessage(senderID);
+      }
+      break;
       case '3':
+      if(state === '1') {
+        sendLocationMessage(senderID, 3);
+      } else {
+        sendUnknownMessage(senderID);
+      }
+      break;
       case '4':
+      if(state === '1') {
+        sendLocationMessage(senderID, 4);
+      } else {
+        sendUnknownMessage(senderID);
+      }
+      break;
       case '5':
+      if(state === '1') {
+        sendLocationMessage(senderID, 5);
+      } else {
+        sendUnknownMessage(senderID);
+      }
+      break;
       case '6':
+      if(state === '1') {
+        sendLocationMessage(senderID, 6);
+      } else {
+        sendUnknownMessage(senderID);
+      }
+      break;
       case '7':
+      if(state === '1') {
+        sendLocationMessage(senderID, 7);
+      } else {
+        sendUnknownMessage(senderID);
+      }
+      break;
       case '8':
+      if(state === '1') {
+        sendLocationMessage(senderID, 8);
+      } else {
+        sendUnknownMessage(senderID);
+      }
+      break;
       case '9':
-      case 'location':
-        if(true) {
-          sendLocationMessage(senderID);
+        if(state === '1') {
+          sendLocationMessage(senderID, 9);
+        } else {
+          sendUnknownMessage(senderID);
         }
         break;
 
@@ -295,14 +398,31 @@ function receivedMessage (event) {
     }
   } else if (messageAttachments) {
     if(messageAttachments.type === "location") {
-      // send
+      sendLocationMessage();
+      sendTrucksMessage(senderID);
     }
   }
 }
 
-function sendLocationMessage(recipientId) {
-  var lat = 43.6596184;
-  var long = -79.3969208;
+function sendTrucksMessage(recipientId) {
+  var ret = "";
+  forEach(truck in trucks) {
+    ret += "{0}: {1}".format(truck,truck.truck_name);
+  }
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      text: ret,
+    }
+  }
+  callSendAPI(messageData);
+}
+
+function sendLocationMessage(recipientId, truck_id) {
+  var lat = trucks.getJSONArray(truck_id).coordinate.lat;
+  var long = trucks.getJSONArray(truck_id).coordinate.long;
   var messageData = {
     recipient: {
       id: recipientId
@@ -326,7 +446,7 @@ function sendLocationMessage(recipientId) {
       }
     }
   };
-
+  state = 2;
   callSendAPI(messageData);
 }
 
