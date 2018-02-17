@@ -361,7 +361,7 @@ function receivedMessage (event) {
     //   sendLocationMessage();
     //   sendTrucksMessage(senderID);
     // }
-    sendTrucksMessage(senderID);
+    sendTrucksMessage(senderID)
 
     if (messageAttachments[0].payload.coordinates) {
       lat = messageAttachments[0].payload.coordinates.lat
@@ -371,7 +371,7 @@ function receivedMessage (event) {
 }
 
 function sendTrucksMessage(recipientId) {
-  var ret = "";
+  var ret = ""
   // for (var truck in trucks) {
   //   ret += "{0}: {1}\n".format(truck, truck.truck_name);
   // }
@@ -386,12 +386,14 @@ function sendTrucksMessage(recipientId) {
   callSendAPI(messageData);
 }
 function distance(x1, y1, x2, y2) {
-  return Math.sqrt(Math.abs(x1-x2)^2 + Math.abs(y1-y2));
+  return Math.sqrt(Math.abs(x1-x2)^2 + Math.abs(y1-y2))
 }
 
 function sendLocationMessage(recipientId, truck_id) {
   // var lat = trucks.getJSONArray(truck_id).coordinate.lat;
   // var long = trucks.getJSONArray(truck_id).coordinate.long;
+  var lat = 0;
+  var long = 0;
   var messageData = {
     recipient: {
       id: recipientId
@@ -408,14 +410,13 @@ function sendLocationMessage(recipientId, truck_id) {
             + lat + "," + long + "&key=AIzaSyB6vp4DRwF2xSUVdOefzuVkncvc7kDMyo8",
             default_action: {
               type: "web_url",
-              url: "https://www.google.ca/maps/place/" + lat + "," + long + "/@" + lat + "," + long + ",17z/data=!4m5!3m4!1s0x0:0x0!8m2!3d" + lat + "!4d" + long
+              url: 'https://www.google.ca/maps/place/' + lat + ',' + long + '/@' + lat + ',' + long + ',17z/data=!4m5!3m4!1s0x0:0x0!8m2!3d' + lat + '!4d' + long
             }
           }]
         }
       }
     }
-  };
-  state = 2;
+  }
   callSendAPI(messageData)
 }
 
@@ -440,12 +441,12 @@ function sendUnknownMessage(recipientId) {
  *
  */
 function receivedDeliveryConfirmation (event) {
-  var senderID = event.sender.id;
-  var recipientID = event.recipient.id;
-  var delivery = event.delivery;
-  var messageIDs = delivery.mids;
-  var watermark = delivery.watermark;
-  var sequenceNumber = delivery.seq;
+  var senderID = event.sender.id
+  var recipientID = event.recipient.id
+  var delivery = event.delivery
+  var messageIDs = delivery.mids
+  var watermark = delivery.watermark
+  var sequenceNumber = delivery.seq
 
   if (messageIDs) {
     messageIDs.forEach(function (messageID) {
@@ -454,7 +455,7 @@ function receivedDeliveryConfirmation (event) {
     });
   }
 
-  console.log("All message before %d were delivered.", watermark);
+  console.log("All message before %d were delivered.", watermark)
 }
 
 
@@ -490,15 +491,15 @@ function receivedPostback (event) {
  *
  */
 function receivedMessageRead (event) {
-  var senderID = event.sender.id;
-  var recipientID = event.recipient.id;
+  var senderID = event.sender.id
+  var recipientID = event.recipient.id
 
   // All messages before watermark (a timestamp) or sequence have been seen.
-  var watermark = event.read.watermark;
-  var sequenceNumber = event.read.seq;
+  var watermark = event.read.watermark
+  var sequenceNumber = event.read.seq
 
-  console.log("Received message read event for watermark %d and sequence " +
-    "number %d", watermark, sequenceNumber);
+  console.log('Received message read event for watermark %d and sequence ' +
+    'number %d', watermark, sequenceNumber)
 }
 
 /*
@@ -510,17 +511,17 @@ function receivedMessageRead (event) {
  *
  */
 function receivedAccountLink (event) {
-  var senderID = event.sender.id;
-  var recipientID = event.recipient.id;
+  var senderID = event.sender.id
+  var recipientID = event.recipient.id
 
-  var status = event.account_linking.status;
-  var authCode = event.account_linking.authorization_code;
+  var status = event.account_linking.status
+  var authCode = event.account_linking.authorization_code
 
-  console.log("Received account link event with for user %d with status %s " +
-    "and auth code %s ", senderID, status, authCode);
+  console.log('Received account link event with for user %d with status %s ' +
+    'and auth code %s ', senderID, status, authCode)
 }
 
-function sendHiMessage(recipientId) {
+function sendHiMessage (recipientId) {
   var messageData = {
     recipient: {
       id: recipientId
@@ -534,47 +535,25 @@ If you want to play then tell me "Start Hunt"!
     }
   }
 
-  callSendAPI(messageData);
-}
-
-/*
- * Send an image using the Send API.
- *
- */
-function sendImageMessage(recipientId) {
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      attachment: {
-        type: "image",
-        payload: {
-          url: SERVER_URL + "/assets/rift.png"
-        }
-      }
-    }
-  };
-
-  callSendAPI(messageData);
+  callSendAPI(messageData)
 }
 
 /*
  * Send a text message using the Send API.
  *
  */
-function sendTextMessage(recipientId, messageText) {
+function sendTextMessage (recipientId, messageText) {
   var messageData = {
     recipient: {
       id: recipientId
     },
     message: {
       text: messageText,
-      metadata: "DEVELOPER_DEFINED_METADATA"
+      metadata: 'DEVELOPER_DEFINED_METADATA'
     }
-  };
+  }
 
-  callSendAPI(messageData);
+  callSendAPI(messageData)
 }
 
 /*
