@@ -18,6 +18,10 @@ const express = require('express')
 const request = require('request')
 
 var app = express()
+var router = express.Router()
+var ft = require('./foodtrucks.json')
+
+
 
 app.set('port', process.env.PORT || 5000)
 app.set('view engine', 'ejs')
@@ -80,6 +84,13 @@ function verifyRequestSignature (req, res, buf) {
     }
   }
 }
+
+app.get('/', function (req, res) {
+  res.render('index', {
+    title: 'Express',
+    foodtrucks: ft
+  })
+})
 
 /*
  * Use your own validation token. Check that the token used in the Webhook
