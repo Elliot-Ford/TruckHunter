@@ -110,6 +110,57 @@ var trucks = {
       "discount": "None",
       "url": "http://example.com"
       }
+  '5':{
+    "_id": "5",
+    "truck_name": "Black Food Truck",
+    "coordinate" : {
+        "lat": 43.66512035,
+        "long": -79.41064433
+    },
+    "discount": "None",
+    "url": "http://example.com"
+    }
+  '6':{
+    "_id": "6",
+    "truck_name": "Black Food Truck",
+    "coordinate" : {
+        "lat": 43.66865931,
+        "long": -79.39313487
+    },
+    "discount": "None",
+    "url": "http://example.com"
+    }
+  '7':{
+    "_id": "7",
+    "truck_name": "Black Food Truck",
+    "coordinate" : {
+        "lat": 43.66536871,
+        "long": -79.38772754
+    },
+    "discount": "None",
+    "url": "http://example.com"
+    }
+  '8':{
+    "_id": "8",
+    "truck_name": "Black Food Truck",
+    "coordinate" : {
+        "lat": 43.66064979,
+        "long": -79.38562468
+    },
+    "discount": "None",
+    "url": "http://example.com"
+    }
+  '9':{
+    "_id": "9",
+    "truck_name": "Black Food Truck",
+    "coordinate" : {
+        "lat": 43.67124337,
+        "long": -79.3893154
+    },
+    "discount": "None",
+    "url": "http://example.com"
+    }
+  }
 }
 
 /*
