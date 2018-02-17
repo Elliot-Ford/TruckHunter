@@ -310,12 +310,18 @@ function sendLocationMessage(recipientId) {
         "type": "template",
         "payload": {
           "template_type": "generic",
-          "elements": {
-            "element": {
+          "elements": [
+            {
               "title": "Here's your food truck",
-              "image_url": "https://en.wiktionary.org/wiki/cat#/media/File:Cat03.jpg"
-            }
-          }
+              "image_url": "https://en.wiktionary.org/wiki/cat#/media/File:Cat03.jpg",
+              "default_action": {
+                "type": "web_url",
+                "url": "https://www.google.com",
+                "messenger_extensions": TRUE,
+                "webview_height_ratio": "FULL",
+              },
+            },
+          ]
         }
       }
     }
