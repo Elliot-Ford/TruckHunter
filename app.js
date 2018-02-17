@@ -377,10 +377,19 @@ function distance (x1, y1, x2, y2) {
   return Math.sqrt(Math.abs(x1 - x2) ^ 2 + Math.abs(y1 - y2))
 }
 
+function getTruck(id) {
+  return data.filter{
+      function(ft{ return ft._id == id
+      });
+  }
+}
+
 function sendLocationMessage (recipientId, truck_id) {
   // var lat = trucks.getJSONArray(truck_id).coordinate.lat;
   // var long = trucks.getJSONArray(truck_id).coordinate.long;
-  var the_truck
+
+
+  var the_truck = getTruck(truck_id)
   for(var truck in tf) {
     if(parseInt(truck._id)-1 === truck_id) {
       the_truck = truck
