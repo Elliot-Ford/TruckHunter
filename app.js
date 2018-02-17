@@ -356,7 +356,7 @@ function receivedMessage (event) {
     }
   } else if (messageAttachments) {
     var lat = null
-    var log = null
+    var long = null
     // if(messageAttachments.type === "location") {
     //   sendLocationMessage();
     //   sendTrucksMessage(senderID);
@@ -365,13 +365,13 @@ function receivedMessage (event) {
 
     if (messageAttachments[0].payload.coordinates) {
       lat = messageAttachments[0].payload.coordinates.lat
-      log = messageAttachments[0].payload.coordinates.long
+      long = messageAttachments[0].payload.coordinates.long
     }
   }
 }
 
-function sendTrucksMessage(recipientId) {
-  var ret = ""
+function sendTrucksMessage (recipientId) {
+  var ret = ''
   // for (var truck in trucks) {
   //   ret += "{0}: {1}\n".format(truck, truck.truck_name);
   // }
@@ -383,13 +383,14 @@ function sendTrucksMessage(recipientId) {
       text: ret
     }
   }
-  callSendAPI(messageData);
-}
-function distance(x1, y1, x2, y2) {
-  return Math.sqrt(Math.abs(x1-x2)^2 + Math.abs(y1-y2))
+  callSendAPI(messageData)
 }
 
-function sendLocationMessage(recipientId, truck_id) {
+function distance (x1, y1, x2, y2) {
+  return Math.sqrt(Math.abs(x1 - x2) ^ 2 + Math.abs(y1 - y2))
+}
+
+function sendLocationMessage (recipientId, truck_id) {
   // var lat = trucks.getJSONArray(truck_id).coordinate.lat;
   // var long = trucks.getJSONArray(truck_id).coordinate.long;
   var lat = 0;
@@ -400,16 +401,14 @@ function sendLocationMessage(recipientId, truck_id) {
     },
     message: {
       attachment: {
-        type: "template",
+        type: 'template',
         payload: {
-          template_type: "generic",
-          elements:[{
-            title:"Here's your food truck! :)",
-            image_url: "https://maps.googleapis.com/maps/api/staticmap?center="
-            + lat + "," + long + "&zoom=15&size=600x300&maptype=roadmap&markers=color:blue%7Clabel:S%7C"
-            + lat + "," + long + "&key=AIzaSyB6vp4DRwF2xSUVdOefzuVkncvc7kDMyo8",
+          template_type: 'generic',
+          elements: [{
+            title: 'Here\'s your food truck! :)',
+            image_url: 'https://maps.googleapis.com/maps/api/staticmap?center=' + lat + ',' + long + '&zoom=15&size=600x300&maptype=roadmap&markers=color:blue%7Clabel:S%7C' + lat + ',' + long + '&key=AIzaSyB6vp4DRwF2xSUVdOefzuVkncvc7kDMyo8',
             default_action: {
-              type: "web_url",
+              type: 'web_url',
               url: 'https://www.google.ca/maps/place/' + lat + ',' + long + '/@' + lat + ',' + long + ',17z/data=!4m5!3m4!1s0x0:0x0!8m2!3d' + lat + '!4d' + long
             }
           }]
@@ -420,7 +419,7 @@ function sendLocationMessage(recipientId, truck_id) {
   callSendAPI(messageData)
 }
 
-function sendUnknownMessage(recipientId) {
+function sendUnknownMessage (recipientId) {
   var messageData = {
     recipient: {
       id: recipientId
@@ -450,14 +449,13 @@ function receivedDeliveryConfirmation (event) {
 
   if (messageIDs) {
     messageIDs.forEach(function (messageID) {
-      console.log("Received delivery confirmation for message ID: %s",
-        messageID);
-    });
+      console.log('Received delivery confirmation for message ID: %s',
+        messageID)
+    })
   }
 
-  console.log("All message before %d were delivered.", watermark)
+  console.log('All message before %d were delivered.', watermark)
 }
-
 
 /*
  * Postback Event
@@ -467,20 +465,20 @@ function receivedDeliveryConfirmation (event) {
  *
  */
 function receivedPostback (event) {
-  var senderID = event.sender.id;
-  var recipientID = event.recipient.id;
-  var timeOfPostback = event.timestamp;
+  var senderID = event.sender.id
+  var recipientID = event.recipient.id
+  var timeOfPostback = event.timestamp
 
   // The 'payload' param is a developer-defined field which is set in a postback
   // button for Structured Messages.
-  var payload = event.postback.payload;
+  var payload = event.postback.payload
 
-  console.log("Received postback for user %d and page %d with payload '%s' " +
-    "at %d", senderID, recipientID, payload, timeOfPostback);
+  console.log('Received postback for user %d and page %d with payload \'%s\' ' +
+    'at %d', senderID, recipientID, payload, timeOfPostback)
 
   // When a postback is called, we'll send a message back to the sender to
   // let them know it was successful
-  sendTextMessage(senderID, "Postback called");
+  sendTextMessage(senderID, 'Postback called')
 }
 
 /*
@@ -500,25 +498,6 @@ function receivedMessageRead (event) {
 
   console.log('Received message read event for watermark %d and sequence ' +
     'number %d', watermark, sequenceNumber)
-}
-
-/*
- * Account Link Event
- *
- * This event is called when the Link Account or UnLink Account action has been
- * tapped.
- * https://developers.facebook.com/docs/messenger-platform/webhook-reference/account-linking
- *
- */
-function receivedAccountLink (event) {
-  var senderID = event.sender.id
-  var recipientID = event.recipient.id
-
-  var status = event.account_linking.status
-  var authCode = event.account_linking.authorization_code
-
-  console.log('Received account link event with for user %d with status %s ' +
-    'and auth code %s ', senderID, status, authCode)
 }
 
 function sendHiMessage (recipientId) {
@@ -560,39 +539,22 @@ function sendTextMessage (recipientId, messageText) {
  * Send a message with Quick Reply buttons.
  *
  */
-function sendQuickReply(recipientId) {
+function sendQuickReply (recipientId) {
   var messageData = {
     recipient: {
       id: recipientId
     },
     message: {
-      text: "Location please!",
+      text: 'Location please!',
       quick_replies: [
         {
-          "content_type":"location",
+          'content_type': 'location'
         }
       ]
     }
-  };
+  }
 
-  callSendAPI(messageData);
-}
-
-/*
- * Send a read receipt to indicate the message has been read
- *
- */
-function sendReadReceipt(recipientId) {
-  console.log("Sending a read receipt to mark message as seen");
-
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    sender_action: "mark_seen"
-  };
-
-  callSendAPI(messageData);
+  callSendAPI(messageData)
 }
 
 /*
@@ -600,7 +562,7 @@ function sendReadReceipt(recipientId) {
  * get the message id in a response
  *
  */
-function callSendAPI(messageData) {
+function callSendAPI (messageData) {
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
     qs: { access_token: PAGE_ACCESS_TOKEN },
@@ -608,28 +570,28 @@ function callSendAPI(messageData) {
     json: messageData
 
   }, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      var recipientId = body.recipient_id;
-      var messageId = body.message_id;
+    if (!error && response.statusCode === 200) {
+      var recipientId = body.recipient_id
+      var messageId = body.message_id
 
       if (messageId) {
-        console.log("Successfully sent message with id %s to recipient %s",
-          messageId, recipientId);
+        console.log('Successfully sent message with id %s to recipient %s',
+          messageId, recipientId)
       } else {
-      console.log("Successfully called Send API for recipient %s",
-        recipientId);
+        console.log('Successfully called Send API for recipient %s',
+        recipientId)
       }
     } else {
-      console.error("Failed calling Send API", response.statusCode, response.statusMessage, body.error);
+      console.error('Failed calling Send API', response.statusCode, response.statusMessage, body.error)
     }
-  });
+  })
 }
 
 // Start server
 // Webhooks must be available via SSL with a certificate signed by a valid
 // certificate authority.
 app.listen(app.get('port'), function () {
-  console.log('Node app is running on port', app.get('port'));
-});
+  console.log('Node app is running on port', app.get('port'))
+})
 
-module.exports = app;
+module.exports = app
