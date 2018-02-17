@@ -346,25 +346,26 @@ function receivedMessage (event) {
     // )
 
   }
-    else {
-      sendUnknownMessage(senderID)
-    }
 }
 
 function sendTrucksMessage (recipientId, lat, long) {
-  var ret = 'Hi'
-  var copy = ft
+  var ret = ''
+  // var copy = ft
 
-  for (var i = 0; i < copy.length && i < 5; i++) {
-      var smallest = 0
-      for (var j = 0; j < copy.length; j++) {
-        if (distance(copy[smallest].lat, copy[smallest].long, lat, long) > distance(copy[j].lat, copy[j].long, lat, long)) {
-          smallest = j
-        }
-      }
-      ret += "{0}: {1} ({2})\n".format(copy[smallest]._id, copy[smallest].truck_name, distance(copy[smallest].lat, copy[smallest].long, lat, long))
-      copy.pop(smallest)
+
+  for(var truck in ft) {
+    ret += JSON.stringify(truck.name)
   }
+  // for (var i = 0; i < copy.length && i < 5; i++) {
+  //     var smallest = 0
+  //     for (var j = 0; j < copy.length; j++) {
+  //       if (distance(copy[smallest].lat, copy[smallest].long, lat, long) > distance(copy[j].lat, copy[j].long, lat, long)) {
+  //         smallest = j
+  //       }
+  //     }
+  //     ret += "{0}: {1} ({2})\n".format(copy[smallest]._id, copy[smallest].truck_name, distance(copy[smallest].lat, copy[smallest].long, lat, long))
+  //     copy.pop(smallest)
+  // }
   var messageData = {
     recipient: {
       id: recipientId
