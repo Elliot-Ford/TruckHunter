@@ -617,3 +617,521 @@ app.listen(app.get('port'), function () {
 });
 
 module.exports = app;
+
+// ***********************************//
+/**
+ * Module dependencies.
+ */
+
+var express = require('express'),
+    routes = require('./routes'),
+    user = require('./routes/user'),
+    http = require('http'),
+    path = require('path'),
+    fs = require('fs');
+
+var app = express();
+
+var db_food_truck;
+
+var db_user;
+
+var cloudant_food_truck;
+
+var cloudant_user;
+
+var fileToUpload;
+
+var dbCredentialsFoodTruck = {
+    dbFoodTruck: 'food_truck_db',
+};
+
+var dbCredentialsUsers = {
+    dbName: 'users_db'
+};
+
+var bodyParser = require('body-parser');
+var methodOverride = require('method-override');
+var logger = require('morgan');
+var errorHandler = require('errorhandler');
+var multipart = require('connect-multiparty')
+var multipartMiddleware = multipart();
+
+// all environments
+app.set('port', process.env.PORT || 3000);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+app.engine('html', require('ejs').renderFile);
+app.use(logger('dev'));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
+app.use(methodOverride());
+app.use(express.static(path.join(__dirname, 'public')));
+app.use('/style', express.static(path.join(__dirname, '/views/style')));
+
+// development only
+if ('development' == app.get('env')) {
+    app.use(errorHandler());
+}
+
+function getdbCredentialsUrl(jsonData) {
+    var vcapServices = JSON.parse(jsonData);
+    // Pattern match to find the first instance of a Cloudant service in
+    // VCAP_SERVICES. If you know your service key, you can access the
+    // service credentials directly by using the vcapServices object.
+    for (var vcapService in vcapServices) {
+        if (vcapService.match(/cloudant/i)) {
+            return vcapServices[vcapService][0].credentials.url;
+        }
+    }
+}
+
+function initDBConnection() {
+    //When running on Bluemix, this variable will be set to a json object
+    //containing all the service credentials of all the bound services
+    if (process.env.VCAP_SERVICES) {
+        dbCredentialsFoodTruck.url = getdbCredentialsUrl(process.env.VCAP_SERVICES);
+        dbCredentialsUsers.url = getdbCredentialsUrl(process.env.VCAP_SERVICES);
+    } else { //When running locally, the VCAP_SERVICES will not be set
+
+        // When running this app locally you can get your Cloudant credentials
+        // from Bluemix (VCAP_SERVICES in "cf env" output or the Environment
+        // Variables section for an app in the Bluemix console dashboard).
+        // Once you have the credentials, paste them into a file called vcap-local.json.
+        // Alternately you could point to a local database here instead of a
+        // Bluemix service.
+        // url will be in this format: https://username:password@xxxxxxxxx-bluemix.cloudant.com
+        dbCredentialsFoodTruck.url = getdbCredentialsUrl(fs.readFileSync("vcap-local.json", "utf-8"));
+        dbCredentialsUsers.url = getdbCredentialsUrl(fs.readFileSync("vcap-local.json", "utf-8"));
+    }
+
+    cloudant_food_truck = require('cloudant')(dbCredentialsFoodTruck.url);
+    cloudant_user = require('cloudant')(dbCredentialsUsers.url);
+
+    // check if DB exists if not create
+    cloudant_food_truck.db_food_truck.create(dbCredentialsFoodTruck.dbName, function(err, res) {
+        if (err) {
+            console.log('Could not create new db: ' + dbCredentialsFoodTruck.dbName + ', it might already exist.');
+        }
+    });
+
+    cloudant_user.db_user.create(dbCredentialsUsers.dbName, function(err, res) {
+        if (err) {
+            console.log('Could not create new db: ' + dbCredentialsUsers.dbName + ', it might already exist.');
+        }
+    });
+
+    db_food_truck = cloudant_food_truck.use(dbCredentialsFoodTruck.dbName);
+
+    db_user = cloudant_user.use(dbCredentialsUser.dbName);
+}
+
+initDBConnection();
+
+app.get('/', routes.index);
+
+function createFoodTruckDB(id, truck_name, lat, long, discount, url) {
+
+    var responseData = {
+        id: id,
+        truck_name: sanitizeInput(truck_name),
+        lat: sanitizeInput(lat),
+        long: sanitizeInput(long),
+        discount: sanitizeInput(discout),
+        url: sanitizeInput(url)
+      };
+
+      return responseData;
+  }
+
+function sanitizeInput(str) {
+    return String(str).replace(/&(?!amp;|lt;|gt;)/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+var saveFoodTruck = function(id, truck_name, lat, long, discount, url, response) {
+
+    if (id === undefined) {
+        // Generated random id
+        id = '';
+    }
+
+    db_food_truck.insert({
+        truck_name: truck_name,
+        lat: lat,
+        long: long,
+        discout: discount,
+        url: url
+    }, id, function(err, doc) {
+        if (err) {
+            console.log(err);
+            response.sendStatus(500);
+        } else
+            response.sendStatus(200);
+        response.end();
+    });
+
+}
+
+app.post('/api/foodtruck', function(request, response) {
+
+    console.log("Create Invoked..");
+    console.log("Truck Name: " + request.body.truck_name);
+    console.log("Latitude: " + request.body.lat);
+    console.log("Longitude: " + request.body.long);
+    console.log("Discount: " + request.body.discount);
+    console.log("URL: " + request.body.url);
+
+    // var id = request.body.id;
+    var truck_name = sanitizeInput(request.body.truck_name);
+    var lat = sanitizeInput(request.body.lat);
+    var long = sanitizeInput(request.body.long);
+    var discount = sanitizeInput(request.body.discout);
+    var url = sanitizeInput(request.body.url);
+
+    saveFoodTruck = function(id, truck_name, lat, long, discount, url, response)
+
+});
+
+app.delete('/api/foodtruck', function(request, response) {
+
+    console.log("Delete Invoked..");
+    var id = request.query.id;
+    // var rev = request.query.rev; // Rev can be fetched from request. if
+    // needed, send the rev from client
+    console.log("Removing document of ID: " + id);
+    console.log('Request Query: ' + JSON.stringify(request.query));
+
+    db_food_truck.get(id, {
+        revs_info: true
+    }, function(err, doc) {
+        if (!err) {
+            db_food_truck.destroy(doc._id, doc._rev, function(err, res) {
+                // Handle response
+                if (err) {
+                    console.log(err);
+                    response.sendStatus(500);
+                } else {
+                    response.sendStatus(200);
+                }
+            });
+        }
+    });
+
+});
+
+app.put('/api/foodtruck', function(request, response) {
+
+    console.log("Update Invoked..");
+
+    var id = request.body.id;
+    var truck_name = sanitizeInput(request.body.truck_name);
+    var lat = sanitizeInput(request.body.lat);
+    var long = sanitizeInput(request.body.long);
+    var discount = sanitizeInput(request.body.discout);
+    var url = sanitizeInput(request.body.url);
+
+    console.log("ID: " + id);
+
+    db_food_truck.get(id, {
+        revs_info: true
+    }, function(err, doc) {
+        if (!err) {
+            console.log(doc);
+            var truck_name = sanitizeInput(request.body.truck_name);
+            var lat = sanitizeInput(request.body.lat);
+            var long = sanitizeInput(request.body.long);
+            var discount = sanitizeInput(request.body.discout);
+            var url = sanitizeInput(request.body.url);
+            db_food_truck.insert(doc, doc.id, function(err, doc) {
+                if (err) {
+                    console.log('Error inserting data\n' + err);
+                    return 500;
+                }
+                return 200;
+            });
+        }
+    });
+});
+
+app.get('/api/foodtruck', function(request, response) {
+
+    console.log("Get method invoked.. ")
+
+    db_food_truck = cloudant_food_truck.use(dbCredentialsFoodTruck.dbName);
+    var docList = [];
+    var i = 0;
+    db_food_truck.list(function(err, body) {
+        if (!err) {
+            var len = body.rows.length;
+            console.log('total # of docs -> ' + len);
+            if (len == 0) {
+                // push sample data
+                // save doc
+                var doc_truck_name = sanitizeInput(request.body.truck_name);
+                var doc_lat = sanitizeInput(request.body.lat);
+                var doc_long = sanitizeInput(request.body.long);
+                var doc_discount = sanitizeInput(request.body.discout);
+                var doc_url = sanitizeInput(request.body.url);
+
+                db_food_truck.insert({
+                    truck_name: doc_truck_name,
+                    lat: doc_lat,
+                    long: doc_long,
+                    discount: doc_discount,
+                    url: doc_url
+                }, '', function(err, doc) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log('Document : ' + JSON.stringify(doc));
+                        var responseData = createFoodTruckDB(
+                            doc.id,
+                            doc_truck_name,
+                            doc_lat,
+                            doc_long,
+                            doc_discount,
+                            doc_url);
+                        docList.push(responseData);
+                        response.write(JSON.stringify(docList));
+                        console.log(JSON.stringify(docList));
+                        console.log('ending response...');
+                        response.end();
+                    }
+                });
+            } else {
+
+                body.rows.forEach(function(document) {
+
+                    db_food_truck.get(document.id, {
+                        revs_info: true
+                    }, function(err, doc) {
+                        if (!err) {
+                              var responseData = createFoodTruckDB(
+                                  doc._id,
+                                  doc.truck_name,
+                                  doc.lat,
+                                  doc.long,
+                                  doc.discount,
+                                  doc.url);
+                            docList.push(responseData);
+                            i++;
+                            if (i >= len) {
+                                response.write(JSON.stringify(docList));
+                                console.log('ending response...');
+                                response.end();
+                            }
+                        } else {
+                            console.log(err);
+                        }
+                    });
+
+                });
+            }
+
+        } else {
+            console.log(err);
+        }
+    });
+
+});
+
+
+function createUser(id, name, lat, long, state, points) {
+
+    var responseData = {
+        id: id,
+        name: sanitizeInput(name),
+        lat: sanitizeInput(lat),
+        long: sanitizeInput(long),
+        state: sanitizeInput(state),
+        points: sanitizeInput(points)
+      };
+
+      return responseData;
+  }
+
+var saveUser = function(id, name, lat, long, state, points, response) {
+
+    if (id === undefined) {
+        // Generated random id
+        id = '';
+    }
+
+    db_user.insert({
+        name: name,
+        lat: lat,
+        long: long,
+        state: state,
+        points: points
+    }, id, function(err, doc) {
+        if (err) {
+            console.log(err);
+            response.sendStatus(500);
+        } else
+            response.sendStatus(200);
+        response.end();
+    });
+
+}
+
+app.post('/api/user', function(request, response) {
+
+    // var id = request.body.id;
+    var name = sanitizeInput(request.body.name);
+    var lat = sanitizeInput(request.body.lat);
+    var long = sanitizeInput(request.body.long);
+    var state = sanitizeInput(request.body.state);
+    var points = sanitizeInput(request.body.points);
+
+    saveUser = function(id, name, lat, long, state, points, response)
+
+});
+
+app.delete('/api/user', function(request, response) {
+
+    console.log("Delete Invoked..");
+    var id = request.query.id;
+    // var rev = request.query.rev; // Rev can be fetched from request. if
+    // needed, send the rev from client
+    console.log("Removing document of ID: " + id);
+    console.log('Request Query: ' + JSON.stringify(request.query));
+
+    db_user.get(id, {
+        revs_info: true
+    }, function(err, doc) {
+        if (!err) {
+            db_user.destroy(doc._id, doc._rev, function(err, res) {
+                // Handle response
+                if (err) {
+                    console.log(err);
+                    response.sendStatus(500);
+                } else {
+                    response.sendStatus(200);
+                }
+            });
+        }
+    });
+
+});
+
+app.put('/api/user', function(request, response) {
+
+    console.log("Update Invoked..");
+
+    var id = request.body.id;
+    var name = sanitizeInput(request.body.name);
+    var lat = sanitizeInput(request.body.lat);
+    var long = sanitizeInput(request.body.long);
+    var state = sanitizeInput(request.body.state);
+    var points = sanitizeInput(request.body.points);
+
+    console.log("ID: " + id);
+
+    db_user.get(id, {
+        revs_info: true
+    }, function(err, doc) {
+        if (!err) {
+            console.log(doc);
+            var name = sanitizeInput(request.body.name);
+            var lat = sanitizeInput(request.body.lat);
+            var long = sanitizeInput(request.body.long);
+            var state = sanitizeInput(request.body.state);
+            var points = sanitizeInput(request.body.points);
+            db_user.insert(doc, doc.id, function(err, doc) {
+                if (err) {
+                    console.log('Error inserting data\n' + err);
+                    return 500;
+                }
+                return 200;
+            });
+        }
+    });
+});
+
+app.get('/api/user', function(request, response) {
+
+    console.log("Get method invoked.. ")
+
+    db = cloudant_user.use(dbCredentialsUser.dbName);
+    var docList = [];
+    var i = 0;
+    db_user.list(function(err, body) {
+        if (!err) {
+            var len = body.rows.length;
+            console.log('total # of docs -> ' + len);
+            if (len == 0) {
+                // push sample data
+                // save doc
+                var doc_name = sanitizeInput(request.body.name);
+                var doc_lat = sanitizeInput(request.body.lat);
+                var doc_long = sanitizeInput(request.body.long);
+                var doc_state = sanitizeInput(request.body.state);
+                var doc_points = sanitizeInput(request.body.points);
+
+                db_user.insert({
+                    name: doc_name,
+                    lat: doc_lat,
+                    long: doc_long,
+                    state: doc_state,
+                    points: doc_points
+                }, '', function(err, doc) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log('Document : ' + JSON.stringify(doc));
+                        var responseData = createUser(
+                            doc.id,
+                            doc_name,
+                            doc_lat,
+                            doc_long,
+                            doc_state,
+                            doc_points);
+                        docList.push(responseData);
+                        response.write(JSON.stringify(docList));
+                        console.log(JSON.stringify(docList));
+                        console.log('ending response...');
+                        response.end();
+                    }
+                });
+            } else {
+
+                body.rows.forEach(function(document) {
+
+                    db_user.get(document.id, {
+                        revs_info: true
+                    }, function(err, doc) {
+                        if (!err) {
+                              var responseData = createUser(
+                                  doc._id,
+                                  doc.name,
+                                  doc.lat,
+                                  doc.long,
+                                  doc.state,
+                                  doc.points);
+                            docList.push(responseData);
+                            i++;
+                            if (i >= len) {
+                                response.write(JSON.stringify(docList));
+                                console.log('ending response...');
+                                response.end();
+                            }
+                        } else {
+                            console.log(err);
+                        }
+                    });
+
+                });
+            }
+
+        } else {
+            console.log(err);
+        }
+    });
+
+});
+
+http.createServer(app).listen(app.get('port'), '0.0.0.0', function() {
+    console.log('Express server listening on port ' + app.get('port'));
+});
