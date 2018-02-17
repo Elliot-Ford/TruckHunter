@@ -13,8 +13,10 @@
     <div id="map"></div>
     <script>
       var trucks = JSON.parse('<%- JSON.stringify(foodtrucks) %>');
+      var lat = JSON.parse('<%- JSON.stringify(user_lat) %>');
+      var long = JSON.parse('<%- JSON.stringify(user_long) %>');
       function initMap() {
-        var bahen = new google.maps.LatLng(43.6596184, -79.3969208);
+        var bahen = new google.maps.LatLng(lat, long);
 
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 15,
