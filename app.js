@@ -270,8 +270,8 @@ function receivedMessage(event) {
         sendHiMessage(senderID);
         break;
 
-      case 'image':
-        // requiresServerURL(sendImageMessage, [senderID]);
+      case 'start hunt':
+        sendQuickReply(senderID)
         break;
 
       case 'gif':
@@ -441,11 +441,9 @@ function sendHiMessage(recipientId) {
     },
     message: {
       text: `
-Congrats on setting up your Messenger Bot!
+Hi I'm Food Truck Hunter! A game that allows you to find food trucks!
 
-Right now, your bot can only respond to a few words. Try out "quick reply", "typing on", "button", or "image" to see how they work. You'll find a complete list of these commands in the "app.js" file. Anything else you type will just be mirrored until you create additional commands.
-
-For more details on how to create commands, go to https://developers.facebook.com/docs/messenger-platform/reference/send-api.
+If you want to play then tell me "Start Hunt"!
       `
     }
   }
@@ -744,22 +742,10 @@ function sendQuickReply(recipientId) {
       id: recipientId
     },
     message: {
-      text: "What's your favorite movie genre?",
+      text: "Location please!",
       quick_replies: [
         {
-          "content_type":"text",
-          "title":"Action",
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_ACTION"
-        },
-        {
-          "content_type":"text",
-          "title":"Comedy",
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_COMEDY"
-        },
-        {
-          "content_type":"text",
-          "title":"Drama",
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_DRAMA"
+          "content_type":"location",
         }
       ]
     }
