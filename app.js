@@ -322,7 +322,7 @@ function receivedMessage (event) {
       default:
         sendUnknownMessage(senderID)
     }
-  } else if (messageAttachments) {
+  } else if (event.message.attachments) {
     var lat = null
     var long = null
     // if(messageAttachments.type === "location") {
@@ -330,9 +330,9 @@ function receivedMessage (event) {
     //   sendTrucksMessage(senderID);
     // }
 
-      lat = messageAttachments[0].payload.coordinates.lat
+      lat = messageAttachments.payload.coordinates.lat
       console.log(lat);
-      long = messageAttachments[0].payload.coordinates.long
+      long = messageAttachments.payload.coordinates.long
       sendTrucksMessage(senderID, lat, long)
     //   app.get('/', function (req, res) {
     //     res.render('index', {
@@ -345,6 +345,9 @@ function receivedMessage (event) {
     // )
 
   }
+    else {
+      sendUnknownMessage(senderID)
+    }
 }
 
 function sendTrucksMessage (recipientId, lat, long) {
