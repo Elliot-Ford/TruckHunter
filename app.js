@@ -358,7 +358,7 @@ function sendTrucksMessage (recipientId, lat, long) {
           smallest = j
         }
       }
-      ret += "{0}: {1} ({2})\n".format(copy[smallest]._id, copy[smallest].truck_name, distance(copy[smallest].lat, copy[smallest].long, lat, long,))
+      ret += "{0}: {1} ({2})\n".format(copy[smallest]._id, copy[smallest].truck_name, distance(copy[smallest].lat, copy[smallest].long, lat, long))
       copy.pop(smallest)
   }
   var messageData = {
