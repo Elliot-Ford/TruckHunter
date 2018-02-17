@@ -339,7 +339,7 @@ function receivedMessage (event) {
 }
 
 function sendTrucksMessage (recipientId) {
-  var ret = ''
+  var ret = 'hello'
   // for (var truck in trucks) {
   //   ret += "{0}: {1}\n".format(truck, truck.truck_name);
   // }
